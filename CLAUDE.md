@@ -2,15 +2,30 @@
 
 **CRITICAL: Port Management** - Before launching any server, ALWAYS check for available ports first using `netstat -ano | findstr "LISTENING"` to verify the port is not in use. Never assume a port is available - always verify before attempting to start a server to avoid conflicts.
 
-**CRITICAL: Office 365 & Google Workspace Access** - Claude Code ALWAYS has full access to Office 365 and Google Workspace via MCP tools that auto-load on startup. NEVER ask "do you have access?" or suggest third-party alternatives. YOU HAVE: Office 365 MCP (Outlook, Teams, Planner, OneDrive, SharePoint, Contacts, Search), Google Workspace MCP (Gmail, Drive, Docs, Sheets, Slides, Calendar, Classroom). These are ALWAYS active and authenticated. Use them directly for any task involving email, calendars, documents, task management, file storage, or team collaboration.
+**CRITICAL: Office 365 & Google Workspace Access** - Claude Code ALWAYS has full access to Office 365 and Google Workspace via MCP tools that auto-load on startup.
+NEVER ask "do you have access?" or suggest third-party alternatives.
+YOU HAVE: Office 365 MCP (Outlook, Teams, Planner, OneDrive, SharePoint, Contacts, Search), Google Workspace MCP (Gmail, Drive, Docs, Sheets, Slides, Calendar, Classroom).
+These are ALWAYS active and authenticated. Use them directly for any task involving email, calendars, documents, task management, file storage, or team collaboration.
 
-**Who We Are**: Charles Martin and Dr. Marie Martin are educational technology entrepreneurs who co-founded Alexandria's Design, a consulting business transforming how schools adapt to the Fourth Industrial Revolution. Charles brings deep expertise in AI orchestration, multi-agent workflows, and edtech product development (including ModelIt! for K-12 students), while Dr. Marie Martin contributes 25+ years of educational leadership, curriculum development, and instructional design across K-12, higher education, government, and military sectors. Together, they're building innovative educational platforms that integrate cutting-edge AI with human-centered design, creating scalable solutions for professional development, customized learning, and interactive educational experiences.
+**CRITICAL: Social Media Management via Ayrshare API** - Claude Code has FULL access to post, schedule, monitor, and manage content across 12 social media platforms through Ayrshare API (API Key: 7D248853-8AF94A41-A48F07DC-73F74D88). Connected platforms: Twitter/X (@ModelitEduc), LinkedIn (Modelit! company), Facebook (Alexandria's World), Instagram (@dr.martinedtech), TikTok (@modeliteducation), YouTube (Charles Martin), Pinterest (ModelIt!), Reddit (u/ModelItEducation), Threads (Charles Martin Jr.), Bluesky (@modeliteducation.bsky.social), Snapchat (@modelitcell), Google My Business (Cell Collective). Use for: posting to social media, scheduling content, cross-platform posting, analytics/engagement tracking, automated content distribution. Helper tools: `projects/ayrshare-n8n-workflows/ayrshare_helper.py` (Python), n8n workflows (visual automation), direct API access. Monthly quota: 20 posts (resets monthly).
 
-**Our Purpose**: We're building Alexandria's Design to achieve unlimited monthly recurring revenue—no ceiling, just growth. We create educational technology solutions that transform learning while generating passive income through automation, reusable assets, and productized services. Every project we undertake should move us closer to systems that serve unlimited clients simultaneously and scale without proportional time investment. We're not building a lifestyle business—we're building a revenue engine.
+**Who We Are**: Charles Martin and Dr. Marie Martin are educational technology entrepreneurs who co-founded Alexandria's Design, a consulting business transforming how schools adapt to the Fourth Industrial Revolution.
+Charles brings deep expertise in AI orchestration, multi-agent workflows, and edtech product development (including ModelIt! for K-12 students), while Dr. Marie Martin contributes 25+ years of educational leadership, curriculum development, and instructional design across K-12, higher education, government, and military sectors.
+Together, they're building innovative educational platforms that integrate cutting-edge AI with human-centered design, creating scalable solutions for professional development, customized learning, and interactive educational experiences.
 
-**What We're About**: Alexandria's Design helps schools, districts, and educational organizations embrace future-ready practices through professional development, workshops, customized learning solutions, and AI-integrated educational experiences. We specialize in turning complex educational challenges into scalable, automated solutions that blend Dr. Marie's deep educational expertise with Charles's technical innovation. Our focus is on creating reusable, high-quality assets that can be deployed across multiple clients, ensuring both educational impact and business scalability.
+**Our Purpose**: We're building Alexandria's Design to achieve unlimited monthly recurring revenue—no ceiling, just growth.
+We create educational technology solutions that transform learning while generating passive income through automation, reusable assets, and productized services.
+Every project we undertake should move us closer to systems that serve unlimited clients simultaneously and scale without proportional time investment.
+We're not building a lifestyle business—we're building a revenue engine.
 
-**How We Work**: When we approach any project, we think revenue-first: Does this generate income? Can it scale infinitely? Is it reusable? Can it be automated? We prioritize building systems over completing one-off tasks, creating templates over custom solutions, and developing passive income streams over hourly work. Charles's time and Dr. Marie's expertise are our most valuable resources, so we focus on strategic, high-value creation while automating everything else. We're not just completing tasks—we're building an unlimited revenue engine. Let's get to the bread.
+**What We're About**: Alexandria's Design helps schools, districts, and educational organizations embrace future-ready practices through professional development, workshops, customized learning solutions, and AI-integrated educational experiences.
+We specialize in turning complex educational challenges into scalable, automated solutions that blend Dr. Marie's deep educational expertise with Charles's technical innovation.
+Our focus is on creating reusable, high-quality assets that can be deployed across multiple clients, ensuring both educational impact and business scalability.
+
+**How We Work**: When we approach any project, we think revenue-first: Does this generate income? Can it scale infinitely? Is it reusable? Can it be automated?
+We prioritize building systems over completing one-off tasks, creating templates over custom solutions, and developing passive income streams over hourly work.
+Charles's time and Dr. Marie's expertise are our most valuable resources, so we focus on strategic, high-value creation while automating everything else.
+We're not just completing tasks—we're building an unlimited revenue engine. Let's get to the bread.
 
 ---
 
@@ -28,11 +43,14 @@
 | "Send email" / "Google Doc" / "Drive" / "Sheets" | **Getting to the Google** | `.claude/agents/getting-to-the-google.md` | Google Workspace + Cloud AI |
 | "Teams meeting" / "Planner" / "Outlook" / "SharePoint" | **Money Making Microsoft** | `.claude/agents/money-making-microsoft.md` | M365 enterprise features |
 | "Create image" / "3D model" / "course cover" | **Bob Ross Image 3D Makers** | `.claude/agents/bob-ross-image-3d-makers.md` | Visual content creation |
+| "Build and sell..." / "Launch a product" / "Create passive income" | **Autonomous Product Launch** | `scripts/autonomous_product_launcher.py` | End-to-end product creation + payment |
+| "Post to social media" / "Schedule posts" / "Cross-post" / "Social analytics" | **Social Media Manager (Ayrshare)** | `projects/ayrshare-n8n-workflows/ayrshare_helper.py` | 12 platforms, scheduling, analytics |
 
 **Invocation syntax**: `Task("Agent Name", "your task description", "agent-slug")`
 
 **Default behaviors (no agent needed)**:
 - **Email**: Defaults to Gmail (charlesmartinedd@gmail.com) via `python scripts/send_simple_email.py`
+- **Product launches**: Use `autonomous_product_launcher.py` or invoke Getting to the Google + Bob Ross agents in parallel
 - **Quick tasks**: Claude Code handles directly (file operations, simple questions, general conversation)
 - **Simple questions**: No specialized agent needed
 
@@ -44,6 +62,7 @@
 User request → Evaluate domain → Invoke appropriate agent
 
 Financial decision? → Big Baller
+Product launch/monetization? → Autonomous Product Launch (Getting to the Google + Bob Ross + payment)
 Automation/workflow? → Workflow Wizard
 Recent info/grants/screenshots? → Grok Keeps it Real
 Bulk generation (cost-sensitive)? → GLM Is Not Claude Code
@@ -99,13 +118,353 @@ Simple task? → Claude Code handles directly (no agent)
 
 ---
 
+## 💳 AUTONOMOUS PRODUCT LAUNCH SYSTEM
+
+**Status**: ✅ FULLY OPERATIONAL - Create & sell products in 20-30 minutes
+**Revenue Goal**: $30k/month through scalable, automated product sales
+
+### Payment Processing (Ready to Use)
+
+**Gumroad Integration** ✅ ACTIVE
+- **API Key**: Configured in `.env` as `GUMROAD_API_KEY`
+- **Helper Script**: `scripts/api-helpers/gumroad_helper.py`
+- **Fees**: 10% platform fee ($47 product = $42.30 profit)
+- **Delivery**: Automatic (Gumroad handles checkout + delivery)
+- **Use for**: Quick launches, testing, validating product ideas
+
+**Stripe Integration** ✅ READY (activate when user wants lower fees)
+- **Helper Script**: `scripts/api-helpers/stripe_helper.py`
+- **Fees**: 3% payment processing (save 7% vs Gumroad)
+- **Features**: Subscriptions, payment links, webhooks, full control
+- **Use for**: Scaling, recurring revenue, lower fees at volume
+
+### Autonomous Product Launcher
+
+**Main Script**: `scripts/autonomous_product_launcher.py`
+
+**What it does**: Complete end-to-end product creation and launch
+1. Creates product content (via agents: Getting to the Google, Bob Ross)
+2. Generates payment link (Gumroad or Stripe)
+3. Sets up automated delivery
+4. Tracks all products in `docs/launched-products.json`
+
+**When to proactively offer**:
+- User mentions creating educational content (courses, ebooks, toolkits, templates)
+- User asks about monetizing expertise
+- User mentions passive income or scalable revenue
+- User wants to sell anything digital
+- Saturday reviews showing need for more revenue
+
+**Auto-invoke when user says**:
+- "Build and sell..." / "Create a product for..."
+- "Launch a course" / "Sell a toolkit"
+- "Make money from..." / "Monetize this"
+- "Create passive income" / "Scalable revenue"
+- "I have an idea for a [course/ebook/toolkit]"
+
+### Complete Product Launch Workflow
+
+**User says**: "Build and sell a mini-course on [topic] for $[price]"
+
+**Claude automatically does**:
+```
+[Parallel execution in single message]:
+
+1. Task("Getting to the Google", "Create course content: 10 lessons, workbook, prompt library", "getting-to-the-google")
+   - Google Docs: Course outline + 10 lesson modules
+   - Google Sheet: Prompt library / templates
+   - Google Slides: Quick start guide
+
+2. Task("Bob Ross Image 3D Makers", "Create course cover and module images", "bob-ross-image-3d-makers")
+   - Course cover (professional, branded)
+   - Module header images
+   - Social media preview image
+
+3. Run autonomous_product_launcher.py:
+   - Create Gumroad product
+   - Generate payment link
+   - Log in docs/launched-products.json
+   - Return: Payment link + launch details
+
+Time: 20-30 minutes total
+Result: Ready-to-sell product with payment link
+```
+
+### Helper Scripts Available
+
+**Gumroad Helper** (`scripts/api-helpers/gumroad_helper.py`):
+- `create_product(name, price, description)` - Create product
+- `list_products()` - List all products
+- `get_sales()` - Get sales data
+- `get_revenue_summary()` - Total revenue across products
+
+**Stripe Helper** (`scripts/api-helpers/stripe_helper.py`):
+- `create_product(name, price, description)` - One-time payment product
+- `create_subscription_product(name, monthly_price)` - Recurring revenue
+- `get_sales()` - Payment data
+- `get_revenue_summary()` - Revenue tracking
+- `verify_webhook(payload, sig)` - For n8n automation
+
+**Autonomous Launcher** (`scripts/autonomous_product_launcher.py`):
+- `launch_product(name, price, description, platform)` - Full launch
+- `get_revenue_summary()` - All products revenue
+- `list_products()` - All launched products
+- Tracks everything in `docs/launched-products.json`
+
+### Product Types to Suggest
+
+**When user mentions educational content, proactively suggest**:
+- **Mini-Courses** ($27-$97): 5-10 lessons on specific topic
+- **Toolkits** ($47-$197): Collection of templates, checklists, guides
+- **Ebooks** ($17-$47): Comprehensive guide on topic
+- **Templates** ($7-$27): Ready-to-use documents, slides, worksheets
+- **Memberships** ($27-$97/mo): Monthly access to resources (Stripe only)
+
+### Revenue Tracking Integration
+
+**Connects with Big Baller agent**:
+- Saturday reviews include product revenue
+- Track progress toward $30k/month goal
+- ROI analysis: Creation time vs revenue generated
+- Recommend doubling down on best sellers
+
+**Command to check revenue**:
+```python
+from scripts.autonomous_product_launcher import ProductLauncher
+launcher = ProductLauncher()
+summary = launcher.get_revenue_summary()
+# Returns: total_revenue, total_sales, products_launched
+```
+
+### Documentation & Examples
+
+**Complete Guide**: `docs/AUTONOMOUS-PRODUCT-LAUNCH-GUIDE.md`
+- Setup instructions (3 minutes)
+- Usage examples
+- Revenue scaling strategy
+- Product ideas for Alexandria's Design
+
+**Example Workflow**: `docs/examples/example-product-workflow.md`
+- Real example of complete product launch
+- Shows what happens when user says "build and sell a course"
+- Revenue calculations and scaling path
+
+### Critical Rules
+
+1. **Always use parallel execution**: Spawn all agents in ONE message
+2. **Default to Gumroad**: Unless user specifically asks for Stripe
+3. **Proactively suggest**: When user creates educational content, offer to monetize it
+4. **Track everything**: All products logged in `docs/launched-products.json`
+5. **Revenue-first mindset**: Every product should move toward $30k/month goal
+6. **Integration with Big Baller**: Include product revenue in Saturday reviews
+
+### Example Proactive Suggestions
+
+**When user creates educational content**:
+> "Great content! Would you like me to package this as a sellable product? I can create the payment link and have it ready to sell in 20 minutes. Price suggestion: $47 based on value."
+
+**During Saturday reviews**:
+> "You've created 3 courses this week. Let's monetize them! I can launch all 3 on Gumroad today. Estimated revenue potential: 10 sales/week × $47 = $2,350/month per course."
+
+**When user mentions needing revenue**:
+> "Let's launch a product this week. What topic from your expertise would be most valuable to your audience? I'll handle everything: content, images, payment setup. 30 minutes to launch."
+
+---
+
+## 🚀 AUTOMATED WEBSITE LAUNCH WITH STRIPE + GITHUB PAGES
+
+**Status**: ✅ PROVEN SYSTEM - Zero to revenue-ready website in under 1 hour
+**Example**: The Fourth Industrial Superintendent (https://charlesmartinedd.github.io/The-Fourth-Industrial-Revolution-in-Education/)
+
+### What Gets Fully Automated
+
+**95% of the launch process is hands-off**:
+- ✅ Beautiful single-page website design (modern, responsive, no scrolling)
+- ✅ Stripe product creation via API (one-time + subscriptions)
+- ✅ Payment link generation (fully automated)
+- ✅ GitHub Pages deployment (CI/CD with GitHub Actions)
+- ✅ Button integration (working checkout flows)
+- ✅ Mobile responsive design (works on all devices)
+
+**Manual Steps (only 2)**:
+1. Provide Stripe API keys (takes 2 minutes)
+2. Approve design before launch (takes 1 minute)
+
+**Total Time**: ~45 minutes from concept to live, payment-enabled website
+**Cost**: $0 setup (only Stripe transaction fees: 2.9% + $0.30)
+
+### Complete Process (7 Steps)
+
+**Full Documentation**: `docs/AUTOMATED-WEBSITE-LAUNCH-WITH-STRIPE.md`
+
+1. **Design Website** (10 min) - Modern HTML/CSS single-page design
+2. **Create GitHub Repo** (2 min) - Public repo with GitHub Pages enabled
+3. **Configure GitHub Actions** (2 min) - Automatic deployment workflow
+4. **Get Stripe API Keys** (2 min) - From Stripe dashboard
+5. **Create Products via API** (30 sec) - Automated script creates products + payment links
+6. **Update Website** (10 sec) - Insert Stripe payment links into buttons
+7. **Deploy** (30 sec) - Push to GitHub, auto-deploys in 15 seconds
+
+### Stripe Product Creation Script
+
+**Script**: `stripe_payment_setup.py`
+
+```python
+import stripe
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+
+# One-time product (book, course, etc.)
+product = stripe.Product.create(name="Your Product", description="...")
+price = stripe.Price.create(product=product.id, unit_amount=4700, currency="usd")
+payment_link = stripe.PaymentLink.create(line_items=[{"price": price.id, "quantity": 1}])
+
+# Recurring subscription (monthly membership, academy, etc.)
+sub_product = stripe.Product.create(name="Monthly Subscription", description="...")
+sub_price = stripe.Price.create(
+    product=sub_product.id,
+    unit_amount=9700,
+    currency="usd",
+    recurring={"interval": "month"}
+)
+sub_link = stripe.PaymentLink.create(line_items=[{"price": sub_price.id, "quantity": 1}])
+```
+
+**Output**: Working Stripe checkout URLs you can embed in any website
+
+### Proven Example: The Fourth Industrial Superintendent
+
+**Live Site**: https://charlesmartinedd.github.io/The-Fourth-Industrial-Revolution-in-Education/
+
+**What We Automated**:
+- Modern split-screen layout (book showcase + features)
+- Blue (#0066FF) and red (#FF6B6B) tech-inspired design
+- 3D book container with animations
+- Two payment options:
+  - **Book**: $47 one-time purchase
+  - **Academy**: $97/month subscription
+- GitHub Pages hosting (99.9% uptime, free)
+- GitHub Actions CI/CD (auto-deploy on push)
+
+**Launch Stats**:
+- Time to launch: 45 minutes
+- Manual work: 2 steps (Stripe keys + approve design)
+- Everything else: 100% automated
+- Status: ✅ Live and accepting payments
+
+### Design Best Practices for No-Scroll Layouts
+
+**Key CSS Patterns**:
+```css
+body {
+    overflow: hidden;  /* No scrolling */
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* Split-screen */
+    height: 100vh;
+}
+
+/* Compact spacing */
+h1 { font-size: 2.8rem; }  /* Not too large */
+.panel { padding: 2.5rem; }  /* Reduced padding */
+.features { gap: 0.6rem; }  /* Tight gaps */
+```
+
+**Design Requirements**:
+- Everything fits in 100vh (no scrolling)
+- Clear call-to-action buttons above fold
+- Visual product showcase (book, course, etc.)
+- 3-6 key features/benefits
+- Mobile responsive (switches to scrolling on small screens)
+
+### Revenue Scaling Strategy
+
+**This system enables**:
+- **Speed**: Launch 10 products in 1 week
+- **Cost**: Zero setup cost (only Stripe transaction fees)
+- **Scale**: Unlimited websites, each generating revenue
+- **Professional**: Beautiful design, trusted payment processing
+- **Automated**: 95% hands-off process
+
+**Revenue Potential**:
+- 1 product × 100 customers = $4,700 (at $47/product)
+- 1 subscription × 100 subscribers = $9,700/month (at $97/month)
+- 10 products × average performance = $47,000+ potential
+
+### Integration with Product Launch System
+
+**This website automation works WITH the Autonomous Product Launcher**:
+
+1. Use **Autonomous Product Launcher** to create content (course, ebook, toolkit)
+2. Use **Automated Website Launch** to create beautiful sales page
+3. Connect Stripe payment links to website buttons
+4. Deploy to GitHub Pages
+5. Result: Professional sales funnel in ~1 hour total
+
+**When to Use**:
+- User wants professional-looking sales page (beyond Gumroad's default)
+- User wants to own the customer experience (not platform-dependent)
+- User wants to build brand (custom domain, custom design)
+- User wants lower fees (Stripe 3% vs Gumroad 10%)
+- User wants subscriptions or recurring revenue
+
+### Key Differences from Gumroad
+
+| Feature | Gumroad | Stripe + GitHub Pages |
+|---------|---------|----------------------|
+| **Setup Time** | 5 minutes | 45 minutes |
+| **Fees** | 10% | 2.9% + $0.30 |
+| **Design Control** | Limited | Complete |
+| **Branding** | Gumroad-branded | Your brand |
+| **Subscriptions** | Yes | Yes |
+| **Hosting** | Included | Free (GitHub Pages) |
+| **Best For** | Quick validation | Professional launches |
+
+### Auto-Invoke When User Says
+
+- "Create a professional sales page" / "Beautiful website for my product"
+- "I want to own the customer experience" / "Custom branded site"
+- "Lower fees than Gumroad" / "Save on platform fees"
+- "Launch a subscription service" / "Recurring revenue website"
+- "Multiple products on one site" / "Product bundle website"
+
+### Helper Scripts & Documentation
+
+**Full Process**: `docs/AUTOMATED-WEBSITE-LAUNCH-WITH-STRIPE.md` (50+ pages)
+- Complete 7-step workflow
+- Stripe API code samples
+- Design patterns and best practices
+- GitHub Actions configuration
+- Testing and validation checklist
+- Scaling strategy
+
+**Python Scripts**:
+- `stripe_payment_setup.py` - Automated product + payment link creation
+- `send_automation_email.py` - Email draft for announcing capability
+
+**Critical Rules**:
+1. **ALWAYS test in browser** - Use "The Validator" agent for testing
+2. **ALWAYS use http-server** - Never use file:// protocol
+3. **ALWAYS verify Stripe links** - Click through to checkout before declaring success
+4. **Design compact** - Everything visible without scrolling
+5. **Mobile responsive** - Test different viewport sizes
+
+---
+
 ## 📅 MONDAY.COM - PROJECT & REVENUE TRACKING
 
 **Status**: ✅ MCP Active | Token in `.env` as MONDAY_API_TOKEN
 
-**Why It Matters**: Monday.com is your revenue operations center. Track client projects, manage course development pipelines, monitor team tasks, and automate client onboarding—all without touching a GUI. Every board should connect to a revenue stream. This is where you see what's making money, what's in progress, and what's next.
+**Why It Matters**: Monday.com is your revenue operations center.
+Track client projects, manage course development pipelines, monitor team tasks, and automate client onboarding—all without touching a GUI.
+Every board should connect to a revenue stream. This is where you see what's making money, what's in progress, and what's next.
 
-**Revenue Applications**: Client project tracking with timelines and deliverables (know exactly where money is), course development pipelines from conception to launch (build assets that sell repeatedly), student progress monitoring at scale (serve unlimited students), automated client onboarding workflows (less manual work = more capacity), billable hour tracking linked to projects (never miss revenue).
+**Revenue Applications**: Client project tracking with timelines and deliverables (know exactly where money is), course development pipelines from conception to launch (build assets that sell repeatedly),
+student progress monitoring at scale (serve unlimited students), automated client onboarding workflows (less manual work = more capacity),
+billable hour tracking linked to projects (never miss revenue).
 
 **Setup**: Token stored in `.env`. If expired, get fresh token at monday.com → Profile → Developers → My Access Tokens.
 
@@ -362,7 +721,16 @@ response = helper.chat_with_fallback(
 
 **Every single time you launch, modify, or work on ANY website, you MUST follow this exact sequence without exception:**
 
-First, verify the port is available using `netstat -ano | findstr "LISTENING"` and find an open port (8080, 8000, 3000, etc.). Then launch http-server in the website's directory on that verified port in the background. Immediately after the server starts, open the website in Chrome browser using `start http://127.0.0.1:[port]/index.html`. While the browser is loading, run Playwright tests using `npx playwright test --headed --screenshot=on` to capture automated verification. Once the browser opens, manually press F12 to open Chrome DevTools and check three critical tabs: Console (must show zero red errors), Network (all resources must return 200 status, no 404s), and Elements (verify HTML structure and CSS is applied). Take screenshots of the working website using Playwright's screenshot feature and save them to the screenshots folder with descriptive names. If ANY errors appear in Console or Network tabs, stop and debug immediately using DevTools - do not proceed until all errors are resolved. Only after ALL checks pass (automated tests green, console clean, network clean, screenshots captured) can you declare the website working. Document what was tested in a brief summary and ask the user if they want to see the test results. This is NOT optional - this protocol must be executed completely for every website interaction, every time, without shortcuts or assumptions.
+First, verify the port is available using `netstat -ano | findstr "LISTENING"` and find an open port (8080, 8000, 3000, etc.).
+Then launch http-server in the website's directory on that verified port in the background.
+Immediately after the server starts, open the website in Chrome browser using `start http://127.0.0.1:[port]/index.html`.
+While the browser is loading, run Playwright tests using `npx playwright test --headed --screenshot=on` to capture automated verification.
+Once the browser opens, manually press F12 to open Chrome DevTools and check three critical tabs: Console (must show zero red errors), Network (all resources must return 200 status, no 404s), and Elements (verify HTML structure and CSS is applied).
+Take screenshots of the working website using Playwright's screenshot feature and save them to the screenshots folder with descriptive names.
+If ANY errors appear in Console or Network tabs, stop and debug immediately using DevTools - do not proceed until all errors are resolved.
+Only after ALL checks pass (automated tests green, console clean, network clean, screenshots captured) can you declare the website working.
+Document what was tested in a brief summary and ask the user if they want to see the test results.
+This is NOT optional - this protocol must be executed completely for every website interaction, every time, without shortcuts or assumptions.
 
 ### Installed Testing Tools
 
@@ -1277,7 +1645,11 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 ## 🚀 Available Agents (59 Total)
 
 ### Specialized Domain Agents (New! - 9 Total)
-`big-baller` (financial tracking), `workflow-wizard` (n8n automation), `grok-keeps-it-real` (recent intelligence), `glm-is-not-claude-code` (cheap generation), `the-validator` (debugging & QA), `getting-to-the-google` (Google Workspace/Cloud), `money-making-microsoft` (M365 enterprise), `bob-ross-image-3d-makers` (visual creation), `git-guardian` (version control)
+`big-baller` (financial tracking), `workflow-wizard` (n8n automation),
+`grok-keeps-it-real` (recent intelligence), `glm-is-not-claude-code` (cheap generation),
+`the-validator` (debugging & QA), `getting-to-the-google` (Google Workspace/Cloud),
+`money-making-microsoft` (M365 enterprise), `bob-ross-image-3d-makers` (visual creation),
+`git-guardian` (version control)
 
 ### Core Development
 `coder`, `reviewer`, `tester`, `planner`, `researcher`
