@@ -57,7 +57,7 @@ Visit: https://console.x.ai/
 
 Already configured in `.env`:
 ```bash
-GROK_API_KEY=xai-K1xq1fOvoO4nOFPEbCK3yNEILrzh1ortXqFK6kw689EwTQUOucQgfUfWaD0q3dvNegcKb6l2icnOwbIm
+GROK_API_KEY=your_api_key_here
 ```
 
 ### 3. Install Dependencies
