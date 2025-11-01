@@ -14,203 +14,88 @@
 
 ---
 
-## 💰 FINANCIAL COMMAND CENTER - LUNCH MONEY INTEGRATION
+## 🚀 QUICK AGENT REFERENCE
 
-**Status**: ✅ Connected and tracking
-**Monthly Revenue Goal**: $30,000
-**Review Day**: Saturday (weekly financial review)
+**When to invoke specialized agents** (use Claude Code's Task tool):
 
-### Charles and Claude are building wealth together.
+| When User Says... | Invoke Agent | File Location | Why |
+|-------------------|--------------|---------------|-----|
+| "Saturday review" / "check finances" / "should I buy..." | **Big Baller** | `.claude/agents/big-baller.md` | Financial tracking, expense decisions |
+| "Create workflow" / "automate this" / "n8n" | **Workflow Wizard** | `.claude/agents/workflow-wizard.md` | n8n automation (NO GUI!) |
+| "Find grants" / "analyze screenshot" / "recent trends" | **Grok Keeps it Real** | `.claude/agents/grok-keeps-it-real.md` | Nov 2024 knowledge + vision |
+| "Generate 100..." / "bulk content" / "cheap generation" | **GLM Is Not Claude Code** | `.claude/agents/glm-is-not-claude-code.md` | Cost-efficient generation (must verify!) |
+| "Test website" / "debug this" / "why isn't it working?" | **The Validator** | `.claude/agents/the-validator.md` | QA, testing, debugging |
+| "Send email" / "Google Doc" / "Drive" / "Sheets" | **Getting to the Google** | `.claude/agents/getting-to-the-google.md` | Google Workspace + Cloud AI |
+| "Teams meeting" / "Planner" / "Outlook" / "SharePoint" | **Money Making Microsoft** | `.claude/agents/money-making-microsoft.md` | M365 enterprise features |
+| "Create image" / "3D model" / "course cover" | **Bob Ross Image 3D Makers** | `.claude/agents/bob-ross-image-3d-makers.md` | Visual content creation |
 
-**Lunch Money API**:
-- Integration: `scripts/lunchmoney_helper.py`
-- API Key: Stored in `.env` (LUNCH_MONEY_API_KEY)
-- Real-time budget tracking and revenue monitoring
+**Invocation syntax**: `Task("Agent Name", "your task description", "agent-slug")`
 
-**Revenue Stream Accounts**:
-- **Alexandria's Design**: cmartin@alexandriasdesign.com (Google Workspace - Work account) ✅
-- **Bills & Important**: lmcmtutors@gmail.com (Gmail - OAuth authenticated) ✅
-- **Personal/Admin**: charlesmartinedd@gmail.com (Gmail - Personal account) ✅
-
-### Claude's Financial Responsibilities
-
-**PROACTIVE Money Tracking**:
-
-1. **Revenue Monitoring** - Track all income across business streams
-2. **Saturday Reviews** - Weekly financial analysis and action items
-3. **Opportunity Detection** - Alert on revenue opportunities from emails/inquiries
-4. **Smart Spending** - Question expenses before recommending new tools/services
-
-### Financial Decision Framework
-
-**Before recommending ANY expense**, Claude asks:
-1. Does this generate revenue?
-2. What's the ROI timeline?
-3. Is there a free/cheaper alternative?
-4. Does it align with "$30k/month goal"?
-
-**When checking financial status**:
-```bash
-python scripts/lunchmoney_helper.py
-```
-
-**Shows**: Month-to-date income, expenses, net profit, recent transactions
-
-### Saturday Money Meeting Protocol
-
-**Every Saturday, Claude provides**:
-```
-This week's numbers:
-- Income: $X,XXX
-- Expenses: $X,XXX
-- Net: $X,XXX
-- Progress to $30k goal: XX%
-
-Top revenue sources this week:
-- [Source 1]: $X,XXX
-- [Source 2]: $X,XXX
-
-Action items for next week:
-1. [Revenue-generating opportunity]
-2. [Cost optimization]
-3. [Scaling opportunity]
-```
-
-### Revenue-First Decision Making
-
-**Always prioritize**:
-- Revenue generation over cost-cutting
-- Scaling opportunities over one-time projects
-- Automated income over manual work
-- High-margin projects over low-margin
-- Client acquisition over tool collection
-
-**The Goal**: Never wonder where you stand financially. Always know the numbers. Always moving toward $30,000/month and beyond.
+**Default behaviors (no agent needed)**:
+- **Email**: Defaults to Gmail (charlesmartinedd@gmail.com) via `python scripts/send_simple_email.py`
+- **Quick tasks**: Claude Code handles directly (file operations, simple questions, general conversation)
+- **Simple questions**: No specialized agent needed
 
 ---
 
-## 🔄 N8N WORKFLOW AUTOMATION - ALWAYS ACTIVE MCP SERVER
-
-**Status**: ✅ MCP Server Always Active
-**Docker Container**: Running on port 5678
-**Web Access**: http://localhost:5678
-**MCP Tools**: 23+ n8n workflow tools available via Claude Code
-
-### Critical Operating Principle: NO GUI ALLOWED
-
-**Charles does NOT use the n8n GUI**. All workflow automation MUST be built programmatically via:
-1. n8n MCP tools (primary method - use these first)
-2. n8n REST API via PowerShell/terminal
-3. Direct workflow JSON manipulation
-
-**NEVER** suggest opening the browser or using the web interface.
-
-### N8N MCP Server Configuration
-
-The n8n-MCP server is **permanently enabled** in `.claude/mcp_settings.json`:
-- Provides 23+ tools for workflow creation and management
-- Access to 541 n8n node types with documentation
-- Smart node search and configuration examples
-- Real-time workflow validation
-
-**API Key Setup** (one-time requirement for full functionality):
-```powershell
-# Run the helper script to get/create API key
-powershell -ExecutionPolicy Bypass -File "scripts/n8n-automation/get-n8n-api-key.ps1"
-
-# Or with credentials for automatic creation:
-powershell -ExecutionPolicy Bypass -File "scripts/n8n-automation/get-n8n-api-key.ps1" -username "your@email.com" -password "yourpassword"
-```
-
-After obtaining the API key, add it to `.env`:
-```
-N8N_API_KEY="your-api-key-here"
-```
-
-### Available N8N MCP Tools
-
-When the MCP server is active, you have access to these tools via Claude Code:
-- **Workflow Management**: Create, read, update, delete workflows
-- **Node Discovery**: Search 541+ n8n node types
-- **Configuration**: Get node parameters and examples
-- **Execution**: Trigger and monitor workflow runs
-- **Templates**: Access pre-built workflow patterns
-
-### External API Policy
-
-**Priority Order for Integrations**:
-1. **First**: Use n8n's built-in nodes (no external APIs needed)
-2. **Second**: Use already-authenticated services (Google Workspace, Office 365, OpenAI, OpenRouter)
-3. **Third**: Use local services (PostgreSQL, Redis, MySQL, MongoDB)
-4. **Last Resort Only**: Suggest free API signups from external companies
-
-Only recommend new API integrations as an absolute last resort.
-
-### Already Available for N8N Workflows
-
-**No New APIs Needed**:
-- **Google Workspace**: Gmail, Drive, Sheets, Docs, Calendar, Slides (authenticated)
-- **Office 365**: Outlook, Teams, OneDrive, SharePoint, Planner (authenticated)
-- **OpenAI**: GPT models, DALL-E, Whisper (API key configured)
-- **OpenRouter**: 300+ LLMs (API key configured)
-- **Databases**: PostgreSQL (port 5432), MySQL (ports 3308, 3309), MongoDB (port 27018)
-- **Redis**: Available on ports 6382, 6383
-- **HTTP/Webhooks**: No auth required
-- **File System**: Direct file operations
-- **JavaScript/Python**: Code execution within n8n
-
-### Workflow Building Process
-
-When Charles requests an n8n workflow:
-
-1. **Use MCP Tools First**: Leverage the n8n-MCP tools to search nodes, get configs, and build workflows
-2. **Check Available Integrations**: Prioritize services already authenticated
-3. **Build Programmatically**: Create workflow JSON via MCP tools or PowerShell
-4. **No GUI**: Never suggest browser access
-5. **Test & Deploy**: Execute and validate programmatically
-
-### Example: Creating a Workflow via MCP Tools
+## 🤔 AGENT DECISION TREE
 
 ```
-When Charles says: "Create an n8n workflow that sends Gmail notifications to Slack"
+User request → Evaluate domain → Invoke appropriate agent
 
-Your response should use n8n MCP tools to:
-1. Search for Gmail and Slack nodes
-2. Get configuration examples for each node
-3. Build the workflow structure
-4. Deploy via MCP tools
-5. Test execution
-
-Never say: "Open n8n at localhost:5678 and..."
-Always say: "I'll use the n8n MCP tools to build this workflow programmatically..."
+Financial decision? → Big Baller
+Automation/workflow? → Workflow Wizard
+Recent info/grants/screenshots? → Grok Keeps it Real
+Bulk generation (cost-sensitive)? → GLM Is Not Claude Code
+Testing/debugging/validation? → The Validator
+Google ecosystem? → Getting to the Google
+Microsoft 365? → Money Making Microsoft
+Visual content (images/3D)? → Bob Ross Image 3D Makers
+Simple task? → Claude Code handles directly (no agent)
 ```
 
-### Helper Scripts Location
+**Use agents when**:
+- Task requires specialized domain knowledge
+- Multiple steps in specialized domain
+- Revenue/financial decisions needed
+- Testing/validation required
+- Platform-specific operations (Google, Microsoft, n8n)
+- Cost-optimization important (Grok vs GLM)
 
-**Path**: `scripts/n8n-automation/`
+**DON'T use agents for**:
+- Simple one-off questions
+- Quick file operations (Read, Write, Edit)
+- General conversation
+- Tasks Claude Code handles directly
 
-**Available Scripts**:
-- `get-n8n-api-key.ps1` - Get or create n8n API key (no GUI)
-- `create-workflow.ps1` - Template for workflow creation (to be created as needed)
-- `list-workflows.ps1` - List all workflows (to be created as needed)
-- `execute-workflow.ps1` - Trigger workflow runs (to be created as needed)
+---
 
-### Integration with Scaling Strategy
+## 💰 FINANCIAL COMMAND CENTER
 
-n8n is **CRITICAL** for Alexandria's Design revenue scaling:
-- **Client Onboarding**: Automated welcome sequences
-- **Lead Nurturing**: Email drip campaigns
-- **Data Pipelines**: Form submissions to databases
-- **Team Coordination**: Automated notifications and updates
-- **Content Distribution**: Multi-platform publishing
-- **Revenue Tracking**: Automated reporting and analytics
-- **Course Delivery**: Student progress tracking and communications
+**Big Baller Agent**: For financial tracking, Saturday reviews, expense decisions, and revenue analysis, use the `big-baller` agent (`.claude/agents/big-baller.md`). Monthly goal: $30k. Revenue-first decisions only. Track via `scripts/lunchmoney_helper.py`. Invoke with: `Task("Big Baller", "your financial query", "big-baller")`
 
-Every automation Charles requests should be evaluated for n8n implementation to maximize scalability and minimize ongoing time investment.
+**Auto-invoke when user says**:
+- "Saturday review" / "It's Saturday" / "Weekly financial review"
+- "Check finances" / "How are we doing financially?"
+- "Should I buy..." / "Should I subscribe to..."
+- "Is this expense worth it?" / "ROI on this tool?"
+- "Track revenue" / "Income this week" / "Progress to $30k"
 
-### Key Reminder
+---
 
-The n8n MCP server is **always active** and **always available**. Use it as your primary method for building workflow automation. Build in code, deploy via terminal, scale infinitely.
+## 🔄 N8N WORKFLOW AUTOMATION
+
+**Status**: ✅ Running on port 5678 | API Key configured
+**API Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzN2NkZGI4Ny1kNDk4LTQxZTUtYTVjMi0yNWNmZmY1MDZhZWEiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzYyMDAzODg3fQ.cWnwy9w0m9cn3i4wazqadJq-qRFl5KIR3e70ta8Rufc`
+
+**Workflow Wizard Agent**: For n8n automation, workflow building, and integration tasks, use the `workflow-wizard` agent (`.claude/agents/workflow-wizard.md`). **CRITICAL**: NO GUI ever—build programmatically via n8n MCP tools. Docker on port 5678. Scripts: `scripts/n8n-automation/`. Invoke with: `Task("Workflow Wizard", "your automation task", "workflow-wizard")`
+
+**Auto-invoke when user says**:
+- "Create an n8n workflow" / "Build a workflow" / "Automate this process"
+- "Connect Gmail to..." / "When email arrives, do..."
+- "Schedule automated..." / "Run this daily/weekly"
+- "Webhook trigger" / "API integration"
+- **NEVER**: "Open n8n" / "Use the GUI" (forbidden!)
 
 ---
 
@@ -223,28 +108,6 @@ The n8n MCP server is **always active** and **always available**. Use it as your
 **Revenue Applications**: Client project tracking with timelines and deliverables (know exactly where money is), course development pipelines from conception to launch (build assets that sell repeatedly), student progress monitoring at scale (serve unlimited students), automated client onboarding workflows (less manual work = more capacity), billable hour tracking linked to projects (never miss revenue).
 
 **Setup**: Token stored in `.env`. If expired, get fresh token at monday.com → Profile → Developers → My Access Tokens.
-
----
-
-## 📝 NOTION - KNOWLEDGE BASE & CLIENT DELIVERABLES
-
-**Status**: ✅ MCP Active | API Token Configured
-
-**Why It Matters**: Notion stores everything that generates revenue: course content that can be sold multiple times, client deliverables that become templates, internal knowledge that speeds up project delivery, student resources that scale infinitely. Every Notion page should be reusable and revenue-generating. Build it once, use it forever.
-
-**Revenue Applications**: Course curriculum storage (build once, sell forever—unlimited students, no extra work), client documentation templates (reuse across every project, faster delivery), internal knowledge base (faster project delivery = more clients = more money), student resource libraries (serve thousands with zero additional time), project documentation that becomes productized offerings (turn internal processes into sellable products).
-
-**Configuration**:
-- **MCP Server**: `@notionhq/notion-mcp-server@latest` (configured in `.claude/mcp_settings.json`)
-- **API Token**: `NOTION_TOKEN` environment variable (configured in `.env` and MCP settings)
-- **Auto-load**: Enabled on Claude Code startup
-- **Token Location**: `.env` file (NOTION_TOKEN=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)
-
-**Restart Required**: After fixing configuration, restart Claude Code to activate Notion MCP tools.
-
----
-
-**Both platforms configured and ready—now we make money with them.**
 
 ---
 
@@ -295,7 +158,7 @@ Complete inventory of installed applications, tools, and services available for 
 
 ---
 
-## 🤖 AI API SERVICES (OpenAI, OpenRouter & Grok 4)
+## 🤖 AI API SERVICES (OpenAI, OpenRouter, Grok 4 & GLM-4.6)
 
 **Ask Before Using**: Claude will always ask permission before using paid API services.
 
@@ -448,134 +311,58 @@ response = helper.chat_with_fallback(
 )
 ```
 
-### Grok 4 API (xAI) - Revenue Intelligence with Recent Data
+### Grok 4 API - Recent Intelligence & Vision
 
-**Status**: ✅ Configured (GROK_API_KEY in .env)
-**Helper**: `scripts/api-helpers/grok_helper.py`
-**Cost**: ~$0.02-0.05 per query | $3 input / $15 output per 1M tokens
+**Grok Keeps it Real Agent**: For recent knowledge (Nov 2024), grant research, screenshot analysis, massive documents (2M context), and market intelligence, use the `grok-keeps-it-real` agent (`.claude/agents/grok-keeps-it-real.md`). Cost: ~$0.02-0.05/query. Helper: `scripts/api-helpers/grok_helper.py`. Invoke with: `Task("Grok Keeps it Real", "your research query", "grok-keeps-it-real")`
 
-**What Grok 4 Is Good At**:
+**Auto-invoke when user mentions**:
+- "Find grants" / "Grant opportunities" / "DoE funding"
+- "Analyze this screenshot" / "What's wrong in this image?"
+- "Recent trends in..." / "Latest developments in..." / "2024-2025 market"
+- "Analyze this RFP" / "Read this 50-page document"
+- "Competitor analysis" / "What are competitors doing?"
 
-Grok 4 has **November 2024 knowledge cutoff** - more recent than Claude or GPT-4. It excels at:
-- **Recent information** - Current grant opportunities, latest industry trends, recent policy changes
-- **Massive context** - 256K tokens (standard) or 2M tokens (fast models) for processing entire documents
-- **Vision analysis** - Understanding screenshots, diagrams, error messages, documents
-- **Real-time intelligence** - What's happening NOW in education markets, grants, technology
-- **Long document processing** - Entire RFPs, research papers, policy documents in one query
-- **Competitive intelligence** - Recent competitor launches, market shifts, industry developments
+### GLM-4.6 API - Cheap Code & Content Generation
 
-**Revenue Applications for Alexandria's Design**:
-- Finding current federal/state education grants (worth $400K-$15M each)
-- Researching latest DoE priorities and compliance requirements
-- Analyzing client error screenshots for faster support
-- Staying current on 2024-2025 education technology trends
-- Processing long RFPs or policy documents with massive context windows
-- Tracking what competitors are doing in real-time
+**GLM Is Not Claude Code Agent**: For cost-efficient code generation and bulk content creation, use the `glm-is-not-claude-code` agent (`.claude/agents/glm-is-not-claude-code.md`). **CRITICAL**: GLM generates only—Claude Code must verify and execute. 5x cheaper than Grok. Helper: `scripts/api-helpers/glm_helper.py`. Invoke with: `Task("GLM Is Not Claude Code", "generate [description]", "glm-is-not-claude-code")`
 
-**Available Models**:
-- `grok-4` - Main model (256K context)
-- `grok-vision-beta` - For image/screenshot analysis
-- `grok-4-fast-reasoning` - For huge documents (2M context!)
-- `grok-4-fast-non-reasoning` - Fast without reasoning (2M context)
-
-**How It Works**:
-
-Claude can summon Grok 4 whenever recent knowledge, vision capabilities, or massive context would be valuable. Always ask permission first and show estimated cost.
-
-```python
-from scripts.api_helpers.grok_helper import GrokHelper
-
-helper = GrokHelper()
-
-# Simple query
-response = helper.simple_chat("Your question here")
-
-# Vision analysis
-analysis = helper.analyze_image(image_url, prompt, model="grok-vision-beta")
-
-# Get token usage
-response = helper.chat(messages, model="grok-4")
-# Returns: response['usage']['total_tokens'], response['content']
-```
-
-**Real Example - Grant Intelligence**:
-
-Query: "What are the most promising federal grants for K-12 AI literacy programs in late 2024/early 2025?"
-
-Results:
-- SEED Grant - $15M, deadline Jan 2025
-- ITEST Program - $2.5M, deadline Feb 2025
-- EIR Expansion - $15M, deadline Feb 2025
-- CSforAll R&D - $2M, deadline March 2025
-
-Cost: $0.023 (2.3 cents) | Tokens: 762 input + 1,382 output = 2,144 total
-
-**Typical Costs**:
-- Short query: 500-1,000 tokens = $0.01-0.02
-- Medium query: 1,000-3,000 tokens = $0.02-0.05
-- Long analysis: 3,000-10,000 tokens = $0.05-0.15
-- Vision analysis: Similar to text queries
-
-**Claude's Judgment**:
-
-Use Grok 4 when you recognize that:
-- The task benefits from November 2024 knowledge
-- Recent/current information would provide better value than your training data
-- A screenshot or image needs analysis
-- A very long document needs processing (256K-2M context)
-- The user would benefit from real-time intelligence (grants, trends, policies)
-
-Always ask permission first and show the estimated cost. Trust your judgment about when Grok 4's capabilities would genuinely help.
-
-**Quick Test**:
-```bash
-python scripts/api-helpers/test_grok.py
-python scripts/api-helpers/demo_grok4.py
-```
+**Auto-invoke when user says**:
+- "Generate 50..." / "Generate 100..." / "Bulk create..."
+- "Create lesson plans at scale" / "Mass quiz generation"
+- "Cheap code generation" / "Cost-efficient generation"
+- **CRITICAL**: Always verify and execute with Claude Code after generation!
 
 ---
 
-## 🐙 GITHUB COMMIT PROTOCOL
+## 🐙 GITHUB VERSION CONTROL
 
-**GitHub Account**: charlesmartinedd
-**Repository Strategy**: Ask before committing
+**Git Guardian Agent**: For all git operations (commits, pushes, PRs, branching), use the `git-guardian` agent (`.claude/agents/git-guardian.md`). **CRITICAL**: Never commit without user permission. Quality commits with descriptive messages. Safety-first with version control. Invoke with: `Task("Git Guardian", "commit these changes", "git-guardian")`
 
-### Commit Workflow
+**Auto-invoke when user says**:
+- "Commit this" / "Push to GitHub" / "Create commit"
+- "Make a PR" / "Pull request" / "Create branch"
+- "Git add" / "Git push" / User explicitly requests version control
 
-**When to ask about committing to GitHub:**
-1. After completing major feature implementations
-2. After significant code refactoring or improvements
-3. After fixing critical bugs
-4. After completing a milestone or task set
-5. When user has made substantial changes across multiple files
-
-**Prompt to use:**
-> "I've completed [description of changes]. Would you like me to commit these changes to GitHub (charlesmartinedd)?"
-
-**What constitutes "major updates":**
-- New features or capabilities added
-- Multiple files modified (3+ files)
-- Significant architecture or design changes
-- Documentation updates for new features
-- Bug fixes that affect core functionality
-- Test suite additions or updates
-
-**Commit Process:**
-1. Ask user: "Would you like to commit to GitHub?"
-2. If yes: Run `git status` and `git diff` to review changes
-3. Create descriptive commit message following repository style
-4. Add files with `git add`
-5. Commit with proper message format
-6. Ask: "Would you like me to push to remote?"
-7. If yes: `git push`
-
-**Never commit without asking first** - Always get user confirmation before creating commits.
+**GitHub Account**: charlesmartinedd | **Never commit without asking first**
 
 ---
 
 ## 🌐 WEBSITE TESTING & DEBUGGING PROTOCOL
 
-**Philosophy**: NEVER assume a website works. ALWAYS test, debug, and verify before declaring success.
+**The Validator Agent**: For website validation, debugging, and quality assurance, use the `the-validator` agent (`.claude/agents/the-validator.md`). **MANDATORY**: Full testing protocol with Playwright, Chrome DevTools, screenshots. Can use OpenRouter premium models (ChatGPT-5) for complex debugging. NEVER declare "it works" without proof. Invoke with: `Task("The Validator", "validate [website/code]", "the-validator")`
+
+**Auto-invoke when user says**:
+- "Test this website" / "Is this working?" / "Does it work?"
+- "Debug this" / "Why isn't this working?" / "Fix this error"
+- "Blank page" / "Not loading" / "Console errors"
+- "Validate before deployment" / "QA check"
+- **Philosophy**: NEVER assume it works without proof!
+
+### 🚨 MANDATORY WEBSITE LAUNCH PROTOCOL
+
+**Every single time you launch, modify, or work on ANY website, you MUST follow this exact sequence without exception:**
+
+First, verify the port is available using `netstat -ano | findstr "LISTENING"` and find an open port (8080, 8000, 3000, etc.). Then launch http-server in the website's directory on that verified port in the background. Immediately after the server starts, open the website in Chrome browser using `start http://127.0.0.1:[port]/index.html`. While the browser is loading, run Playwright tests using `npx playwright test --headed --screenshot=on` to capture automated verification. Once the browser opens, manually press F12 to open Chrome DevTools and check three critical tabs: Console (must show zero red errors), Network (all resources must return 200 status, no 404s), and Elements (verify HTML structure and CSS is applied). Take screenshots of the working website using Playwright's screenshot feature and save them to the screenshots folder with descriptive names. If ANY errors appear in Console or Network tabs, stop and debug immediately using DevTools - do not proceed until all errors are resolved. Only after ALL checks pass (automated tests green, console clean, network clean, screenshots captured) can you declare the website working. Document what was tested in a brief summary and ask the user if they want to see the test results. This is NOT optional - this protocol must be executed completely for every website interaction, every time, without shortcuts or assumptions.
 
 ### Installed Testing Tools
 
@@ -966,83 +753,37 @@ dir "C:\Users\MarieLexisDad\Videos\Screen Recordings" /O-D
 
 ## 🔑 GOOGLE WORKSPACE ACCESS
 
-**Status**: ✅ REQUIRED - Always load MCP server
-**Accounts**:
-- Personal: charlesmartinedd@gmail.com ✅
-- Work: cmartin@alexandriasdesign.com ✅
-- Bills & Important: lmcmtutors@gmail.com ✅
+**Getting to the Google Agent**: For all Google Workspace and Cloud operations (Gmail, Drive, Docs, Sheets, Slides, Calendar, Classroom, Cloud AI APIs), use the `getting-to-the-google` agent (`.claude/agents/getting-to-the-google.md`). Manages 3 accounts seamlessly, 11 APIs, revenue-generating Cloud services. Invoke with: `Task("Getting to the Google", "your Google task", "getting-to-the-google")`
 
-### Configuration
-- **OAuth Tokens**:
-  - Personal: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-personal.json`
-  - Work: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-work.json`
-  - Bills & Important: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-tutoring.json` ✅ SUPER PERMANENT
-- **Account Config**: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\accounts.json`
-- **MCP Config**: `C:\Users\MarieLexisDad\.claude\mcp_settings.json`
+**Auto-invoke when user says**:
+- "Send email" / "Gmail" / "Create Google Doc"
+- "Share in Drive" / "Google Sheets" / "Slides presentation"
+- "Schedule meeting" / "Google Calendar"
+- "OCR this image" / "Translate to Spanish" / "Transcribe audio" (Cloud AI)
+- "Google Classroom" / "Course delivery"
 
-### Capabilities (via MCP)
-- **Gmail**: Send, read, search, organize emails
-- **Google Drive**: Real-time collaboration, file sharing, unlimited storage
-- **Google Calendar**: Event management, scheduling
-- **Google Docs**: Collaborative document editing
-- **Google Sheets**: Spreadsheets with real-time collaboration
-- **Google Slides**: Presentation creation and sharing
-- **Google Classroom**: Course and assignment management
+**Accounts**: charlesmartinedd@gmail.com (personal), cmartin@alexandriasdesign.com (work), lmcmtutors@gmail.com (bills) ✅
 
-### Gmail Sending Protocol
-**Quick Send**: Use `python scripts/send_simple_email.py` directly—edit the script with recipient, subject, and body, then run it. Default sender is charlesmartinedd@gmail.com (personal account). No need to ask permission or check—just send.
-
-### Strengths & Best Use Cases
-- **Real-time collaboration**: Multiple users editing simultaneously
-- **Simple sharing**: Easy public/private link sharing
-- **Cross-platform access**: Works everywhere, any device
-- **Integration**: Apps Script automation, extensive API ecosystem
-- **Search**: Powerful search across all content
-
-### Fallback (when MCP not loaded)
-```bash
-python scripts/audit_google_drive.py
-python scripts/audit_gmail.py
-```
+**OAuth Tokens**: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-*.json`
+**Full details**: See Getting to the Google agent file
 
 ---
 
 ## 🏢 OFFICE 365 / MICROSOFT 365 ACCESS
 
-**Status**: ✅ MCP tools loaded and active
-**Full Suite**: Office apps + Microsoft 365 cloud services
+**Money Making Microsoft Agent**: For all Microsoft 365 operations (Outlook, Teams, Planner, OneDrive, SharePoint, Contacts, Calendar), use the `money-making-microsoft` agent (`.claude/agents/money-making-microsoft.md`). 30 MCP tools, Teams transcripts, Planner boards (8 tools!), enterprise features. Invoke with: `Task("Money Making Microsoft", "your M365 task", "money-making-microsoft")`
 
-### Capabilities (via MCP)
-- **Outlook/Exchange**: Enterprise email with advanced rules and organization
-- **Microsoft Teams**: Chat, video calls, channels, meetings with transcripts
-- **OneDrive/SharePoint**: Enterprise file management, version control, compliance
-- **Planner**: Visual task management, kanban boards, team coordination
-- **OneNote**: Note-taking and organization
-- **Office Apps**: Word, Excel, PowerPoint (desktop + web)
-- **Microsoft Search**: Unified search across all M365 content
-- **Contacts**: Advanced contact management and CRM integration
+**Auto-invoke when user says**:
+- "Teams meeting" / "Schedule Teams call" / "Meeting transcript"
+- "Planner board" / "Create tasks" / "Project management"
+- "Outlook" / "Enterprise email" / "Email rules"
+- "SharePoint" / "OneDrive" / "Version control"
+- "Meeting intelligence" / "AI summary" / "Action items"
 
-### Available MCP Tools
-- **Email**: `mcp__office-365-mcp__email` - Send, read, list, search
-- **Email Search**: `mcp__office-365-mcp__email_search` - KQL advanced search
-- **Calendar**: `mcp__office-365-mcp__calendar` - Events and scheduling
-- **Teams Meetings**: `mcp__office-365-mcp__teams_meeting` - Video meetings, transcripts, recordings
-- **Teams Channels**: `mcp__office-365-mcp__teams_channel` - Team collaboration
-- **Teams Chat**: `mcp__office-365-mcp__teams_chat` - Direct messaging
-- **Planner**: `mcp__office-365-mcp__planner_*` - Task and project management
-- **Files**: `mcp__office-365-mcp__files` - OneDrive and SharePoint
-- **Contacts**: `mcp__office-365-mcp__contacts` - Contact management
-- **Search**: `mcp__office-365-mcp__search` - Unified M365 search
+**Status**: ✅ MCP tools loaded and active (30 tools total)
 
-### Strengths & Best Use Cases
-- **Enterprise features**: Advanced security, compliance, governance
-- **Teams collaboration**: Video meetings, chat, channels, integrated workflow
-- **Advanced Excel**: Complex data analysis, Power Query, Power Pivot
-- **Professional presentations**: PowerPoint with advanced design tools
-- **Task management**: Planner for visual project tracking
-- **Meeting intelligence**: Teams transcripts, recordings, insights
-- **Email rules**: Sophisticated inbox automation and organization
-- **Version control**: SharePoint document versioning and co-authoring
+**Tokens**: `C:\Users\MarieLexisDad\.office-mcp-tokens.json`
+**Full details**: See Money Making Microsoft agent file
 
 ---
 
@@ -1298,11 +1039,18 @@ python scripts/test_office365_capabilities.py
 
 ---
 
-## 🎨 BLENDER & 3D TOOLS
+## 🎨 IMAGE & 3D CREATION
 
-**Status**: ✅ Blender 4.3.0 installed and ready
-**Location**: `C:\Users\MarieLexisDad\tools\blender\blender-4.3.0-windows-x64\blender.exe`
-**Documentation**: `docs/BLENDER_AND_3D_TOOLS.md`
+**Bob Ross Image 3D Makers Agent**: For AI image generation (OpenAI, OpenRouter) and 3D modeling (Blender, Google Scanned Objects), use the `bob-ross-image-3d-makers` agent (`.claude/agents/bob-ross-image-3d-makers.md`). Course covers, marketing materials, 3D models, simulations. "No mistakes, just happy little visuals." Invoke with: `Task("Bob Ross Image 3D Makers", "create [description]", "bob-ross-image-3d-makers")`
+
+**Auto-invoke when user says**:
+- "Create course cover" / "Design image" / "Marketing graphic"
+- "Generate 20 images" / "Batch image creation"
+- "3D model" / "Blender" / "Physics simulation"
+- "Render 3D" / "Create visual assets"
+- "DALL-E" / "AI image" / "Happy little visuals"
+
+**Tools**: Blender 4.3.0, OpenAI DALL-E, OpenRouter, Google 3D dataset | **Docs**: `docs/BLENDER_AND_3D_TOOLS.md`
 
 ### Blender Capabilities
 
@@ -1526,7 +1274,10 @@ This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Co
 - **Clean Architecture**: Separate concerns
 - **Documentation**: Keep updated
 
-## 🚀 Available Agents (54 Total)
+## 🚀 Available Agents (59 Total)
+
+### Specialized Domain Agents (New! - 9 Total)
+`big-baller` (financial tracking), `workflow-wizard` (n8n automation), `grok-keeps-it-real` (recent intelligence), `glm-is-not-claude-code` (cheap generation), `the-validator` (debugging & QA), `getting-to-the-google` (Google Workspace/Cloud), `money-making-microsoft` (M365 enterprise), `bob-ross-image-3d-makers` (visual creation), `git-guardian` (version control)
 
 ### Core Development
 `coder`, `reviewer`, `tester`, `planner`, `researcher`
