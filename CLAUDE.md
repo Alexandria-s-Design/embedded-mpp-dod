@@ -7,7 +7,249 @@ NEVER ask "do you have access?" or suggest third-party alternatives.
 YOU HAVE: Office 365 MCP (Outlook, Teams, Planner, OneDrive, SharePoint, Contacts, Search), Google Workspace MCP (Gmail, Drive, Docs, Sheets, Slides, Calendar, Classroom).
 These are ALWAYS active and authenticated. Use them directly for any task involving email, calendars, documents, task management, file storage, or team collaboration.
 
-**CRITICAL: Social Media Management via Ayrshare API** - Claude Code has FULL access to post, schedule, monitor, and manage content across 12 social media platforms through Ayrshare API (API Key: 7D248853-8AF94A41-A48F07DC-73F74D88). Connected platforms: Twitter/X (@ModelitEduc), LinkedIn (Modelit! company), Facebook (Alexandria's World), Instagram (@dr.martinedtech), TikTok (@modeliteducation), YouTube (Charles Martin), Pinterest (ModelIt!), Reddit (u/ModelItEducation), Threads (Charles Martin Jr.), Bluesky (@modeliteducation.bsky.social), Snapchat (@modelitcell), Google My Business (Cell Collective). Use for: posting to social media, scheduling content, cross-platform posting, analytics/engagement tracking, automated content distribution. Helper tools: `projects/ayrshare-n8n-workflows/ayrshare_helper.py` (Python), n8n workflows (visual automation), direct API access. Monthly quota: 20 posts (resets monthly).
+**🔐 Google Workspace Multi-Account Access** - Four Google accounts are configured and available:
+
+| Account Name | Email | Purpose |
+|-------------|--------|---------|
+| **personal** | charlesmartinedd@gmail.com | Charles's personal account (default) |
+| **work** | cmartin@alexandriasdesign.com | Alexandria's Design business |
+| **tutoring** | lmcmtutors@gmail.com | Tutoring business |
+| **alexandriasworld** | alexandriasworld1234@gmail.com | Alexandria's World project |
+
+**Using Google Accounts**:
+- All accounts auto-load on MCP startup
+- When using MCP tools, specify account with `account: "work"` or `account: "personal"` etc.
+- If no account specified, defaults to "personal"
+
+**Re-authentication** (if tokens expire):
+```bash
+# Quick fix (5 minutes)
+scripts\reauth_google_account.bat work       # For work account
+scripts\reauth_google_account.bat tutoring   # For tutoring account
+scripts\reauth_google_account.bat personal   # For personal account
+scripts\reauth_google_account.bat alexandriasworld   # For Alexandria's World
+
+# Test all accounts working
+python scripts/test_google_multiaccoun_access.py
+```
+
+**Token Location**: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-*.json` (auto-refresh)
+**Configuration**: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\accounts.json`
+
+**🔐 Microsoft Teams Authentication Protocol** - When MCP authentication fails or expires, use device code flow:
+1. Run: `python scripts/teams_direct_access.py`
+2. Visit: https://microsoft.com/devicelogin in browser
+3. Enter the displayed device code
+4. Approve permissions
+5. Script automatically extracts Teams content and saves token
+
+**Token Location**: `~/.office-mcp-tokens.json` | **Tenant ID**: eae24dc3-8ff6-4594-8212-b23ae3e02122
+Token refreshes automatically via refresh_token. If "invalid_client" error occurs, Azure app needs client_secret configuration.
+
+**CRITICAL: Social Media Management via Ayrshare API** - Claude Code has FULL access to post, schedule, monitor, and manage content across 12 social media platforms through Ayrshare API (API Key: 7D248853-8AF94A41-A48F07DC-73F74D88). Connected platforms: Twitter/X (@ModelitEduc), LinkedIn (Modelit! company), Facebook (Alexandria's World), Instagram (@dr.martinedtech), TikTok (@modeliteducation), YouTube (Charles Martin), Pinterest (ModelIt!), Reddit (u/ModelItEducation), Threads (Charles Martin Jr.), Bluesky (@modeliteducation.bsky.social), Snapchat (@modelitcell), Google My Business (Cell Collective). Monthly quota: 20 posts (resets monthly).
+
+### 🔑 API KEY LOCATIONS
+
+**CRITICAL: All API keys are stored in `.env` file in root directory** - C:\Users\MarieLexisDad\.env
+
+**Available API Keys** (always check .env file for current keys):
+
+| Service | Environment Variable | Helper Script | Status |
+|---------|---------------------|---------------|--------|
+| **OpenAI** | `OPENAI_API_KEY` | `scripts/api-helpers/openai_helper.py` | ✅ Active |
+| **OpenRouter** | `OPENROUTER_API_KEY` | `scripts/api-helpers/openrouter_helper.py` | ✅ Active |
+| **Grok (xAI)** | `GROK_API_KEY` | `scripts/api-helpers/grok_helper.py` | ✅ Active |
+| **Google Gemini** | `GOOGLE_API_KEY` | `scripts/generate_images.py` | ✅ Active |
+| **Ayrshare** | `AYRSHARE_API_KEY` | `projects/ayrshare-n8n-workflows/` | ✅ Active (in SCALING PROTOCOL) |
+| **Stripe** | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY` | `scripts/api-helpers/stripe_helper.py` | ✅ Active |
+| **n8n** | `N8N_API_KEY` | `scripts/n8n-automation/` | ✅ Active |
+| **Lunch Money** | `LUNCH_MONEY_API_KEY` | `scripts/lunchmoney_helper.py` | ✅ Active |
+| **Monday.com** | `MONDAY_API_TOKEN` | `scripts/migrate_monday_to_planner.py` | ✅ Active |
+| **Gumroad** | `GUMROAD_API_KEY` | `scripts/autonomous_product_launcher.py` | ✅ Active |
+| **Slack** | `SLACK_BOT_TOKEN` | `scripts/n8n-automation/slack_bolt_bot.py` | ✅ Active |
+| **ngrok** | `NGROK_AUTHTOKEN` | Environment | ✅ Active |
+
+**How to Use API Keys**:
+1. **Load from .env**: All helper scripts use `python-dotenv` to load keys from `.env`
+2. **Environment variables**: Keys are loaded as environment variables via `os.getenv()`
+3. **Never hard-code keys**: Always reference via environment variables
+4. **Helper scripts**: Use pre-built helpers in `scripts/api-helpers/` for common operations
+
+**Quick Reference**:
+```python
+# Import helper
+from scripts.api_helpers.openrouter_helper import OpenRouterHelper
+from scripts.api_helpers.openai_helper import OpenAIHelper
+
+# Helpers automatically load keys from .env
+openrouter = OpenRouterHelper()  # Loads OPENROUTER_API_KEY
+openai = OpenAIHelper()          # Loads OPENAI_API_KEY
+```
+
+**NEVER ask "do you have access to OpenRouter/OpenAI?"** - The answer is YES, keys are in `.env` file and helpers exist.
+
+---
+
+## 🍌 NANO BANANA - OPENROUTER GEMINI 2.5 FLASH IMAGE
+
+**"Nano Banana" = OpenRouter's Gemini 2.5 Flash Image model for AI image generation**
+
+**Status**: ✅ VERIFIED WORKING (tested 2025-01-15)
+**Model**: `google/gemini-2.5-flash-image`
+**Cost**: ~$0.039 per image (1,300 tokens @ $30/1M tokens)
+**Use Case**: Educational worksheets, coloring pages, TPT products, visual content
+
+### 🔑 API Configuration
+
+**CRITICAL**: ALL API keys stored in `.env` ONLY. Never hardcode.
+
+```python
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env with override to ensure fresh keys
+load_dotenv(Path(__file__).parent.parent / '.env', override=True)
+
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
+```
+
+### 📝 Special Request Format (CRITICAL!)
+
+Nano Banana requires special `modalities` parameter:
+
+```python
+import requests
+
+url = "https://openrouter.ai/api/v1/chat/completions"
+
+headers = {
+    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "Content-Type": "application/json",
+    "HTTP-Referer": "https://alexandriasdesign.com",  # Optional
+    "X-Title": "Your App Name"  # Optional
+}
+
+payload = {
+    "model": "google/gemini-2.5-flash-image",
+    "messages": [
+        {
+            "role": "user",
+            "content": "Create a simple black and white coloring page of a tree"
+        }
+    ],
+    "modalities": ["image", "text"]  # ⚠️ CRITICAL - Required for image generation!
+}
+
+response = requests.post(url, headers=headers, json=payload, timeout=120)
+```
+
+### 🖼️ Image Response Format
+
+Images returned in nested structure:
+
+```python
+{
+  "choices": [{
+    "message": {
+      "images": [{
+        "type": "image_url",
+        "image_url": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANS..."
+        }
+      }],
+      "content": "Text description (if any)"
+    }
+  }],
+  "usage": {
+    "total_tokens": 1346,
+    "prompt_tokens": 48,
+    "completion_tokens": 1298
+  }
+}
+```
+
+### 💾 Extract and Save Images
+
+```python
+import base64
+from pathlib import Path
+
+result = response.json()
+images = result['choices'][0]['message']['images']
+
+for i, img_data in enumerate(images):
+    # Handle nested dictionary structure
+    if isinstance(img_data, dict):
+        if 'image_url' in img_data:
+            img_url = img_data['image_url'].get('url', '')
+        else:
+            img_url = img_data.get('url', '')
+
+        if img_url and img_url.startswith('data:image'):
+            # Extract base64 data (after "data:image/png;base64,")
+            base64_data = img_url.split(',')[1]
+
+            # Decode and save
+            img_bytes = base64.b64decode(base64_data)
+
+            output_path = Path(f"temp/generated_image_{i}.png")
+            output_path.parent.mkdir(exist_ok=True)
+
+            with open(output_path, 'wb') as f:
+                f.write(img_bytes)
+
+            print(f"Saved: {output_path} ({len(img_bytes):,} bytes)")
+```
+
+### ✅ Complete Working Example
+
+See `temp/test_nano_banana.py` for full tested implementation.
+
+**Test Results** (verified 2025-01-15):
+- ✅ Successfully generated 381.8 KB PNG image
+- ✅ Production-ready quality
+- ✅ ~10-15 seconds generation time
+- ✅ Cost: $0.039 per image
+
+### 🎯 Best Practices
+
+1. **Always use `override=True`** when loading .env to ensure fresh API keys
+2. **Never hardcode API keys** - always use `os.getenv()`
+3. **Include `modalities` parameter** - request fails without it
+4. **Handle nested image structure** - check for `image_url` key
+5. **Set reasonable timeout** - use 120s for image generation
+6. **Save to temp/ directory** - follow file organization rules
+
+### 🔗 Reference Files
+
+- **Test script**: `temp/test_nano_banana.py`
+- **Documentation**: `docs/API-VERIFICATION-COMPLETE.md`
+- **QA Setup**: `docs/QA-AUTOMATION-SETUP-STATUS.md`
+
+---
+
+**CRITICAL: Google Sheets Command Center** - ALL todos, ideas, and project tracking is now centralized in Google Sheets: https://docs.google.com/spreadsheets/d/1PY2tHFHr0gelLWC2SrCefW9EXi9CNrAdj8N1Vzc5u5s/edit. This is the SINGLE SOURCE OF TRUTH for task management. You can send me todos via email, conversation, or Notion - I'll parse and organize them into the appropriate sheet tab (Inbox, Business Todos, Personal Todos, Ideas Backlog, Active Projects, Team Roster, Revenue Tracker). During our check-ins, we'll review and update everything directly in Google Sheets. No more scattered tracking - everything lives in Google Workspace where I have full read/write access.
+
+**CRITICAL: CrewAI Multi-Agent System** - Claude Code has access to CrewAI for spawning persistent agent armies that run 24/7 via OpenRouter API. **ONLY USE FREE MODELS** to avoid costs:
+- **Llama 3.3 70B Instruct** (`openrouter/meta-llama/llama-3.3-70b-instruct:free`) - Primary free model, excellent for general tasks
+- **DeepSeek Chat V3** (`openrouter/deepseek/deepseek-chat-v3:free`) - Alternative free model, good for conversational tasks
+- **DeepSeek R1 Zero** (`openrouter/deepseek/deepseek-r1-zero:free`) - Free reasoning specialist for complex problem-solving
+
+**Rate Limiting**: Free tier supports ~100-200 requests/minute. Spawn 10-20 concurrent agents max to avoid hitting limits. Use sequential processing for tasks to respect rate limits.
+
+**MCP Integration**: CrewAI agents can execute tasks autonomously via Google Workspace, Office 365, Ayrshare, and other MCP tools. See `scripts/crewai_mcp_integration.py` for implementation examples.
+
+**Validation**: ALL CrewAI agent output MUST be validated before deployment using the 3-tier validation system:
+1. Automated validation (syntax, security, quality)
+2. The Validator agent (comprehensive QA)
+3. Human review (for critical deployments)
+
+See `scripts/crewai_validation_system.py` for validation implementation.
+
+**Progress Tracking**: All agent work is tracked in real-time and synced to Google Sheets Command Center. Use `scripts/crewai_progress_tracker.py` for monitoring.
+
+**Agent Spawning**: Use `scripts/crewai_agent_army_spawner.py` to launch agents for ideas from Ideas-de-Carlitos repository. Never trust agent-generated code/content without validation.
 
 **Who We Are**: Charles Martin and Dr. Marie Martin are educational technology entrepreneurs who co-founded Alexandria's Design, a consulting business transforming how schools adapt to the Fourth Industrial Revolution.
 Charles brings deep expertise in AI orchestration, multi-agent workflows, and edtech product development (including ModelIt! for K-12 students), while Dr. Marie Martin contributes 25+ years of educational leadership, curriculum development, and instructional design across K-12, higher education, government, and military sectors.
@@ -27,6 +269,161 @@ We prioritize building systems over completing one-off tasks, creating templates
 Charles's time and Dr. Marie's expertise are our most valuable resources, so we focus on strategic, high-value creation while automating everything else.
 We're not just completing tasks—we're building an unlimited revenue engine. Let's get to the bread.
 
+## 📚 ModelIt & Cell Collective Projects
+
+All ModelIt and Cell Collective related work should be saved in the `C:\Users\MarieLexisDad\repos\` directory following the naming convention `modelit-[descriptive-name]` to maintain consistency with the existing 8 dissemination repositories (modelit-brand-identity, modelit-teacher-products, modelit-professional-development, modelit-conferences, modelit-publications, modelit-community, modelit-homeschool, modelit-growth). This is the central hub for all ModelIt and Cell Collective work. All repositories will be pushed to the ModelIt project folder on GitHub. **Whenever the user references "ModelIt", always ask which specific project folder/repository they're referring to.**
+
+---
+
+## 🚨 CRITICAL SAFETY PROTOCOLS
+
+This section contains NON-NEGOTIABLE safety rules that override all other instructions and apply even when dangerously-skip-permissions is enabled.
+
+### 🔒 CLAUDE.MD PROTECTION
+
+**CLAUDE.md is SACRED** - This file contains the PRIMARY instruction set for Claude Code and MUST NEVER be modified without explicit user verification.
+
+**MANDATORY RULES** (NO EXCEPTIONS):
+
+1. **NEVER edit CLAUDE.md without asking first** - Even if user says "update CLAUDE.md", respond with: "What specifically should I add, modify, or remove from CLAUDE.md?"
+
+2. **ALWAYS create timestamped backup BEFORE any changes**:
+   ```bash
+   powershell -Command "Copy-Item CLAUDE.md -Destination ('CLAUDE.md.backup-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))"
+   ```
+
+3. **ALWAYS show proposed changes** - Present the exact text you plan to add/modify in a clear format and wait for explicit user approval before making any changes.
+
+4. **This applies EVEN with dangerously-skip-permissions** - CLAUDE.md protection overrides ALL permission settings.
+
+5. **After making changes** - Ask user: "Changes made to CLAUDE.md. Please review and confirm it looks correct."
+
+**Exception**: Adding new agents to the Quick Agent Reference table is allowed if user explicitly requests "add [agent name] to CLAUDE.md table."
+
+---
+
+### 🚨 TRIPLE PORT VERIFICATION
+
+**PROBLEM**: Servers sometimes launch on occupied ports, causing conflicts and silent failures.
+
+**SOLUTION**: ALWAYS perform TRIPLE verification before launching any server.
+
+**MANDATORY 3-STEP PORT CHECK** (NO EXCEPTIONS):
+
+**Step 1: Check if port is actively listening**
+```bash
+netstat -ano | findstr "LISTENING" | findstr ":8080"
+```
+
+**Step 2: Check for ANY usage of the port (including TIME_WAIT states)**
+```bash
+netstat -ano | findstr ":8080"
+```
+
+**Step 3: Check common alternative ports if primary is taken**
+```bash
+# Check these ports in order: 8080, 8000, 3000, 5000, 5500, 9000
+netstat -ano | findstr "LISTENING" | findstr ":8080 :8000 :3000 :5000 :5500 :9000"
+```
+
+**After verification**:
+- ✅ **Port FREE**: Proceed with server launch on verified port
+- 🔄 **Port TAKEN**: Automatically select next available port from list above
+- 📢 **Always report**: "Port [X] verified as available. Launching server on http://localhost:[X]"
+
+**Common Ports to Check** (priority order):
+1. **8080** - http-server default
+2. **8000** - alternative http
+3. **3000** - common dev server (React, Node)
+4. **5000** - Flask/Python default
+5. **5500** - Live Server
+6. **9000** - alternative dev server
+
+**NEVER assume a port is available. ALWAYS verify with all three checks before launching.**
+
+---
+
+### ✅ MANDATORY WEBSITE VALIDATION PROTOCOL
+
+**PROBLEM**: Websites declared "working" without proper testing lead to broken deployments and wasted time.
+
+**SOLUTION**: MANDATORY validation using Playwright + GPT Vision + screenshots + recordings.
+
+**EVERY WEBSITE DEPLOYMENT MUST FOLLOW THIS 8-STEP PROTOCOL** (NO EXCEPTIONS):
+
+**Step 1: Triple Port Verification**
+- Run all 3 port checks from Triple Port Verification protocol above
+- Never proceed without confirmed available port
+
+**Step 2: Launch Server**
+```bash
+cd [website-directory]
+npx http-server -p [verified-port] &
+```
+- Report: "Server launched on http://localhost:[port]"
+
+**Step 3: Playwright Automated Testing**
+```bash
+npx playwright test --headed --screenshot=on --video=on
+```
+- Captures screenshots of every page
+- Records video of full test run
+- Saves to `test-results/` and `playwright-results/` directories
+
+**Step 4: GPT Vision Screenshot Analysis**
+```python
+# Use OpenRouter GPT-4o to analyze screenshots for visual errors
+from scripts.api_helpers.openrouter_helper import OpenRouterHelper
+
+helper = OpenRouterHelper()
+response = helper.chat_with_vision(
+    image_path="screenshots/homepage.png",
+    prompt="Analyze this website screenshot for: visual errors, broken layouts, missing images, misaligned elements, CSS issues, or any console errors visible in the screenshot. Provide specific actionable feedback.",
+    model="openai/gpt-4o"
+)
+```
+
+**Step 5: Manual Browser Verification with DevTools**
+```bash
+start http://localhost:[port]/index.html
+```
+- Open Chrome DevTools (F12)
+- **Console tab**: MUST show 0 red errors (warnings acceptable)
+- **Network tab**: ALL resources MUST return 200 status (no 404s)
+- **Elements tab**: Verify HTML structure and CSS applied correctly
+
+**Step 6: Screen Recording** (for complex interactions)
+```bash
+npx playwright test --headed --video=on
+# Video saves to playwright-results/[test-name]-[timestamp].webm
+```
+
+**Step 7: Validation Report**
+Create a comprehensive validation report showing:
+```
+✅ Port [X] verified as available
+✅ Server launched successfully on http://localhost:[X]
+✅ Playwright tests: [X/X] passed
+✅ GPT Vision analysis: [Summary of findings - "No visual errors" or specific issues]
+✅ Console: 0 errors
+✅ Network: All resources loaded (200 status)
+✅ Interactive elements tested: [list key interactions tested]
+✅ Screenshots captured: [list screenshot files]
+✅ Video recording: [file path if applicable]
+```
+
+**Step 8: Invoke The Validator Agent**
+For comprehensive website validation, use The Validator specialized agent:
+```
+Task("The Validator", "Validate [website name] deployment with full protocol including Playwright tests, DevTools analysis, and screenshot verification", "the-validator")
+```
+
+**NEVER declare a website "working", "deployed successfully", or "ready for production" without completing ALL 8 steps and providing the validation report as proof.**
+
+**Reference Documentation**:
+- The Validator Agent: `.claude/agents/the-validator.md`
+- Full Testing Protocol: `docs/guides/WEBSITE-TESTING-PROTOCOL.md`
+
 ---
 
 ## 🚀 QUICK AGENT REFERENCE
@@ -38,13 +435,13 @@ We're not just completing tasks—we're building an unlimited revenue engine. Le
 | "Saturday review" / "check finances" / "should I buy..." | **Big Baller** | `.claude/agents/big-baller.md` | Financial tracking, expense decisions |
 | "Create workflow" / "automate this" / "n8n" | **Workflow Wizard** | `.claude/agents/workflow-wizard.md` | n8n automation (NO GUI!) |
 | "Find grants" / "analyze screenshot" / "recent trends" | **Grok Keeps it Real** | `.claude/agents/grok-keeps-it-real.md` | Nov 2024 knowledge + vision |
-| "Generate 100..." / "bulk content" / "cheap generation" | **GLM Is Not Claude Code** | `.claude/agents/glm-is-not-claude-code.md` | Cost-efficient generation (must verify!) |
 | "Test website" / "debug this" / "why isn't it working?" | **The Validator** | `.claude/agents/the-validator.md` | QA, testing, debugging |
 | "Send email" / "Google Doc" / "Drive" / "Sheets" | **Getting to the Google** | `.claude/agents/getting-to-the-google.md` | Google Workspace + Cloud AI |
 | "Teams meeting" / "Planner" / "Outlook" / "SharePoint" | **Money Making Microsoft** | `.claude/agents/money-making-microsoft.md` | M365 enterprise features |
 | "Create image" / "3D model" / "course cover" | **Bob Ross Image 3D Makers** | `.claude/agents/bob-ross-image-3d-makers.md` | Visual content creation |
 | "Build and sell..." / "Launch a product" / "Create passive income" | **Autonomous Product Launch** | `scripts/autonomous_product_launcher.py` | End-to-end product creation + payment |
-| "Post to social media" / "Schedule posts" / "Cross-post" / "Social analytics" | **Social Media Manager (Ayrshare)** | `projects/ayrshare-n8n-workflows/ayrshare_helper.py` | 12 platforms, scheduling, analytics |
+| "Post to social media" / "Schedule posts" / "Cross-post" | **Social Media Manager** | `projects/ayrshare-n8n-workflows/ayrshare_helper.py` | 12 platforms, scheduling, analytics |
+| "Commit this" / "Push to GitHub" / "Create PR" | **Git Guardian** | `.claude/agents/git-guardian.md` | Version control (never commit without asking!) |
 
 **Invocation syntax**: `Task("Agent Name", "your task description", "agent-slug")`
 
@@ -65,11 +462,11 @@ Financial decision? → Big Baller
 Product launch/monetization? → Autonomous Product Launch (Getting to the Google + Bob Ross + payment)
 Automation/workflow? → Workflow Wizard
 Recent info/grants/screenshots? → Grok Keeps it Real
-Bulk generation (cost-sensitive)? → GLM Is Not Claude Code
 Testing/debugging/validation? → The Validator
 Google ecosystem? → Getting to the Google
 Microsoft 365? → Money Making Microsoft
 Visual content (images/3D)? → Bob Ross Image 3D Makers
+Version control? → Git Guardian
 Simple task? → Claude Code handles directly (no agent)
 ```
 
@@ -79,7 +476,6 @@ Simple task? → Claude Code handles directly (no agent)
 - Revenue/financial decisions needed
 - Testing/validation required
 - Platform-specific operations (Google, Microsoft, n8n)
-- Cost-optimization important (Grok vs GLM)
 
 **DON'T use agents for**:
 - Simple one-off questions
@@ -89,1484 +485,72 @@ Simple task? → Claude Code handles directly (no agent)
 
 ---
 
-## 💰 FINANCIAL COMMAND CENTER
-
-**Big Baller Agent**: For financial tracking, Saturday reviews, expense decisions, and revenue analysis, use the `big-baller` agent (`.claude/agents/big-baller.md`). Monthly goal: $30k. Revenue-first decisions only. Track via `scripts/lunchmoney_helper.py`. Invoke with: `Task("Big Baller", "your financial query", "big-baller")`
-
-**Auto-invoke when user says**:
-- "Saturday review" / "It's Saturday" / "Weekly financial review"
-- "Check finances" / "How are we doing financially?"
-- "Should I buy..." / "Should I subscribe to..."
-- "Is this expense worth it?" / "ROI on this tool?"
-- "Track revenue" / "Income this week" / "Progress to $30k"
-
----
-
-## 🔄 N8N WORKFLOW AUTOMATION
-
-**Status**: ✅ Running on port 5678 | API Key configured
-**API Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzN2NkZGI4Ny1kNDk4LTQxZTUtYTVjMi0yNWNmZmY1MDZhZWEiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzYyMDAzODg3fQ.cWnwy9w0m9cn3i4wazqadJq-qRFl5KIR3e70ta8Rufc`
-
-**Workflow Wizard Agent**: For n8n automation, workflow building, and integration tasks, use the `workflow-wizard` agent (`.claude/agents/workflow-wizard.md`). **CRITICAL**: NO GUI ever—build programmatically via n8n MCP tools. Docker on port 5678. Scripts: `scripts/n8n-automation/`. Invoke with: `Task("Workflow Wizard", "your automation task", "workflow-wizard")`
-
-**Auto-invoke when user says**:
-- "Create an n8n workflow" / "Build a workflow" / "Automate this process"
-- "Connect Gmail to..." / "When email arrives, do..."
-- "Schedule automated..." / "Run this daily/weekly"
-- "Webhook trigger" / "API integration"
-- **NEVER**: "Open n8n" / "Use the GUI" (forbidden!)
-
----
-
-## 💳 AUTONOMOUS PRODUCT LAUNCH SYSTEM
-
-**Status**: ✅ FULLY OPERATIONAL - Create & sell products in 20-30 minutes
-**Revenue Goal**: $30k/month through scalable, automated product sales
-
-### Payment Processing (Ready to Use)
-
-**Gumroad Integration** ✅ ACTIVE
-- **API Key**: Configured in `.env` as `GUMROAD_API_KEY`
-- **Helper Script**: `scripts/api-helpers/gumroad_helper.py`
-- **Fees**: 10% platform fee ($47 product = $42.30 profit)
-- **Delivery**: Automatic (Gumroad handles checkout + delivery)
-- **Use for**: Quick launches, testing, validating product ideas
-
-**Stripe Integration** ✅ READY (activate when user wants lower fees)
-- **Helper Script**: `scripts/api-helpers/stripe_helper.py`
-- **Fees**: 3% payment processing (save 7% vs Gumroad)
-- **Features**: Subscriptions, payment links, webhooks, full control
-- **Use for**: Scaling, recurring revenue, lower fees at volume
-
-### Autonomous Product Launcher
-
-**Main Script**: `scripts/autonomous_product_launcher.py`
-
-**What it does**: Complete end-to-end product creation and launch
-1. Creates product content (via agents: Getting to the Google, Bob Ross)
-2. Generates payment link (Gumroad or Stripe)
-3. Sets up automated delivery
-4. Tracks all products in `docs/launched-products.json`
-
-**When to proactively offer**:
-- User mentions creating educational content (courses, ebooks, toolkits, templates)
-- User asks about monetizing expertise
-- User mentions passive income or scalable revenue
-- User wants to sell anything digital
-- Saturday reviews showing need for more revenue
-
-**Auto-invoke when user says**:
-- "Build and sell..." / "Create a product for..."
-- "Launch a course" / "Sell a toolkit"
-- "Make money from..." / "Monetize this"
-- "Create passive income" / "Scalable revenue"
-- "I have an idea for a [course/ebook/toolkit]"
-
-### Complete Product Launch Workflow
-
-**User says**: "Build and sell a mini-course on [topic] for $[price]"
-
-**Claude automatically does**:
-```
-[Parallel execution in single message]:
-
-1. Task("Getting to the Google", "Create course content: 10 lessons, workbook, prompt library", "getting-to-the-google")
-   - Google Docs: Course outline + 10 lesson modules
-   - Google Sheet: Prompt library / templates
-   - Google Slides: Quick start guide
-
-2. Task("Bob Ross Image 3D Makers", "Create course cover and module images", "bob-ross-image-3d-makers")
-   - Course cover (professional, branded)
-   - Module header images
-   - Social media preview image
-
-3. Run autonomous_product_launcher.py:
-   - Create Gumroad product
-   - Generate payment link
-   - Log in docs/launched-products.json
-   - Return: Payment link + launch details
-
-Time: 20-30 minutes total
-Result: Ready-to-sell product with payment link
-```
-
-### Helper Scripts Available
-
-**Gumroad Helper** (`scripts/api-helpers/gumroad_helper.py`):
-- `create_product(name, price, description)` - Create product
-- `list_products()` - List all products
-- `get_sales()` - Get sales data
-- `get_revenue_summary()` - Total revenue across products
-
-**Stripe Helper** (`scripts/api-helpers/stripe_helper.py`):
-- `create_product(name, price, description)` - One-time payment product
-- `create_subscription_product(name, monthly_price)` - Recurring revenue
-- `get_sales()` - Payment data
-- `get_revenue_summary()` - Revenue tracking
-- `verify_webhook(payload, sig)` - For n8n automation
-
-**Autonomous Launcher** (`scripts/autonomous_product_launcher.py`):
-- `launch_product(name, price, description, platform)` - Full launch
-- `get_revenue_summary()` - All products revenue
-- `list_products()` - All launched products
-- Tracks everything in `docs/launched-products.json`
-
-### Product Types to Suggest
-
-**When user mentions educational content, proactively suggest**:
-- **Mini-Courses** ($27-$97): 5-10 lessons on specific topic
-- **Toolkits** ($47-$197): Collection of templates, checklists, guides
-- **Ebooks** ($17-$47): Comprehensive guide on topic
-- **Templates** ($7-$27): Ready-to-use documents, slides, worksheets
-- **Memberships** ($27-$97/mo): Monthly access to resources (Stripe only)
-
-### Revenue Tracking Integration
-
-**Connects with Big Baller agent**:
-- Saturday reviews include product revenue
-- Track progress toward $30k/month goal
-- ROI analysis: Creation time vs revenue generated
-- Recommend doubling down on best sellers
-
-**Command to check revenue**:
-```python
-from scripts.autonomous_product_launcher import ProductLauncher
-launcher = ProductLauncher()
-summary = launcher.get_revenue_summary()
-# Returns: total_revenue, total_sales, products_launched
-```
-
-### Documentation & Examples
-
-**Complete Guide**: `docs/AUTONOMOUS-PRODUCT-LAUNCH-GUIDE.md`
-- Setup instructions (3 minutes)
-- Usage examples
-- Revenue scaling strategy
-- Product ideas for Alexandria's Design
-
-**Example Workflow**: `docs/examples/example-product-workflow.md`
-- Real example of complete product launch
-- Shows what happens when user says "build and sell a course"
-- Revenue calculations and scaling path
-
-### Critical Rules
-
-1. **Always use parallel execution**: Spawn all agents in ONE message
-2. **Default to Gumroad**: Unless user specifically asks for Stripe
-3. **Proactively suggest**: When user creates educational content, offer to monetize it
-4. **Track everything**: All products logged in `docs/launched-products.json`
-5. **Revenue-first mindset**: Every product should move toward $30k/month goal
-6. **Integration with Big Baller**: Include product revenue in Saturday reviews
-
-### Example Proactive Suggestions
-
-**When user creates educational content**:
-> "Great content! Would you like me to package this as a sellable product? I can create the payment link and have it ready to sell in 20 minutes. Price suggestion: $47 based on value."
-
-**During Saturday reviews**:
-> "You've created 3 courses this week. Let's monetize them! I can launch all 3 on Gumroad today. Estimated revenue potential: 10 sales/week × $47 = $2,350/month per course."
-
-**When user mentions needing revenue**:
-> "Let's launch a product this week. What topic from your expertise would be most valuable to your audience? I'll handle everything: content, images, payment setup. 30 minutes to launch."
-
----
-
-## 🚀 AUTOMATED WEBSITE LAUNCH WITH STRIPE + GITHUB PAGES
-
-**Status**: ✅ PROVEN SYSTEM - Zero to revenue-ready website in under 1 hour
-**Example**: The Fourth Industrial Superintendent (https://charlesmartinedd.github.io/The-Fourth-Industrial-Revolution-in-Education/)
-
-### What Gets Fully Automated
-
-**95% of the launch process is hands-off**:
-- ✅ Beautiful single-page website design (modern, responsive, no scrolling)
-- ✅ Stripe product creation via API (one-time + subscriptions)
-- ✅ Payment link generation (fully automated)
-- ✅ GitHub Pages deployment (CI/CD with GitHub Actions)
-- ✅ Button integration (working checkout flows)
-- ✅ Mobile responsive design (works on all devices)
-
-**Manual Steps (only 2)**:
-1. Provide Stripe API keys (takes 2 minutes)
-2. Approve design before launch (takes 1 minute)
-
-**Total Time**: ~45 minutes from concept to live, payment-enabled website
-**Cost**: $0 setup (only Stripe transaction fees: 2.9% + $0.30)
-
-### Complete Process (7 Steps)
-
-**Full Documentation**: `docs/AUTOMATED-WEBSITE-LAUNCH-WITH-STRIPE.md`
-
-1. **Design Website** (10 min) - Modern HTML/CSS single-page design
-2. **Create GitHub Repo** (2 min) - Public repo with GitHub Pages enabled
-3. **Configure GitHub Actions** (2 min) - Automatic deployment workflow
-4. **Get Stripe API Keys** (2 min) - From Stripe dashboard
-5. **Create Products via API** (30 sec) - Automated script creates products + payment links
-6. **Update Website** (10 sec) - Insert Stripe payment links into buttons
-7. **Deploy** (30 sec) - Push to GitHub, auto-deploys in 15 seconds
-
-### Stripe Product Creation Script
-
-**Script**: `stripe_payment_setup.py`
-
-```python
-import stripe
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
-
-# One-time product (book, course, etc.)
-product = stripe.Product.create(name="Your Product", description="...")
-price = stripe.Price.create(product=product.id, unit_amount=4700, currency="usd")
-payment_link = stripe.PaymentLink.create(line_items=[{"price": price.id, "quantity": 1}])
-
-# Recurring subscription (monthly membership, academy, etc.)
-sub_product = stripe.Product.create(name="Monthly Subscription", description="...")
-sub_price = stripe.Price.create(
-    product=sub_product.id,
-    unit_amount=9700,
-    currency="usd",
-    recurring={"interval": "month"}
-)
-sub_link = stripe.PaymentLink.create(line_items=[{"price": sub_price.id, "quantity": 1}])
-```
-
-**Output**: Working Stripe checkout URLs you can embed in any website
-
-### Proven Example: The Fourth Industrial Superintendent
-
-**Live Site**: https://charlesmartinedd.github.io/The-Fourth-Industrial-Revolution-in-Education/
-
-**What We Automated**:
-- Modern split-screen layout (book showcase + features)
-- Blue (#0066FF) and red (#FF6B6B) tech-inspired design
-- 3D book container with animations
-- Two payment options:
-  - **Book**: $47 one-time purchase
-  - **Academy**: $97/month subscription
-- GitHub Pages hosting (99.9% uptime, free)
-- GitHub Actions CI/CD (auto-deploy on push)
-
-**Launch Stats**:
-- Time to launch: 45 minutes
-- Manual work: 2 steps (Stripe keys + approve design)
-- Everything else: 100% automated
-- Status: ✅ Live and accepting payments
-
-### Design Best Practices for No-Scroll Layouts
-
-**Key CSS Patterns**:
-```css
-body {
-    overflow: hidden;  /* No scrolling */
-    height: 100vh;
-    width: 100vw;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;  /* Split-screen */
-    height: 100vh;
-}
-
-/* Compact spacing */
-h1 { font-size: 2.8rem; }  /* Not too large */
-.panel { padding: 2.5rem; }  /* Reduced padding */
-.features { gap: 0.6rem; }  /* Tight gaps */
-```
-
-**Design Requirements**:
-- Everything fits in 100vh (no scrolling)
-- Clear call-to-action buttons above fold
-- Visual product showcase (book, course, etc.)
-- 3-6 key features/benefits
-- Mobile responsive (switches to scrolling on small screens)
-
-### Revenue Scaling Strategy
-
-**This system enables**:
-- **Speed**: Launch 10 products in 1 week
-- **Cost**: Zero setup cost (only Stripe transaction fees)
-- **Scale**: Unlimited websites, each generating revenue
-- **Professional**: Beautiful design, trusted payment processing
-- **Automated**: 95% hands-off process
-
-**Revenue Potential**:
-- 1 product × 100 customers = $4,700 (at $47/product)
-- 1 subscription × 100 subscribers = $9,700/month (at $97/month)
-- 10 products × average performance = $47,000+ potential
-
-### Integration with Product Launch System
-
-**This website automation works WITH the Autonomous Product Launcher**:
-
-1. Use **Autonomous Product Launcher** to create content (course, ebook, toolkit)
-2. Use **Automated Website Launch** to create beautiful sales page
-3. Connect Stripe payment links to website buttons
-4. Deploy to GitHub Pages
-5. Result: Professional sales funnel in ~1 hour total
-
-**When to Use**:
-- User wants professional-looking sales page (beyond Gumroad's default)
-- User wants to own the customer experience (not platform-dependent)
-- User wants to build brand (custom domain, custom design)
-- User wants lower fees (Stripe 3% vs Gumroad 10%)
-- User wants subscriptions or recurring revenue
-
-### Key Differences from Gumroad
-
-| Feature | Gumroad | Stripe + GitHub Pages |
-|---------|---------|----------------------|
-| **Setup Time** | 5 minutes | 45 minutes |
-| **Fees** | 10% | 2.9% + $0.30 |
-| **Design Control** | Limited | Complete |
-| **Branding** | Gumroad-branded | Your brand |
-| **Subscriptions** | Yes | Yes |
-| **Hosting** | Included | Free (GitHub Pages) |
-| **Best For** | Quick validation | Professional launches |
-
-### Auto-Invoke When User Says
-
-- "Create a professional sales page" / "Beautiful website for my product"
-- "I want to own the customer experience" / "Custom branded site"
-- "Lower fees than Gumroad" / "Save on platform fees"
-- "Launch a subscription service" / "Recurring revenue website"
-- "Multiple products on one site" / "Product bundle website"
-
-### Helper Scripts & Documentation
-
-**Full Process**: `docs/AUTOMATED-WEBSITE-LAUNCH-WITH-STRIPE.md` (50+ pages)
-- Complete 7-step workflow
-- Stripe API code samples
-- Design patterns and best practices
-- GitHub Actions configuration
-- Testing and validation checklist
-- Scaling strategy
-
-**Python Scripts**:
-- `stripe_payment_setup.py` - Automated product + payment link creation
-- `send_automation_email.py` - Email draft for announcing capability
-
-**Critical Rules**:
-1. **ALWAYS test in browser** - Use "The Validator" agent for testing
-2. **ALWAYS use http-server** - Never use file:// protocol
-3. **ALWAYS verify Stripe links** - Click through to checkout before declaring success
-4. **Design compact** - Everything visible without scrolling
-5. **Mobile responsive** - Test different viewport sizes
-
----
-
-## 📅 MONDAY.COM - PROJECT & REVENUE TRACKING
-
-**Status**: ✅ MCP Active | Token in `.env` as MONDAY_API_TOKEN
-
-**Why It Matters**: Monday.com is your revenue operations center.
-Track client projects, manage course development pipelines, monitor team tasks, and automate client onboarding—all without touching a GUI.
-Every board should connect to a revenue stream. This is where you see what's making money, what's in progress, and what's next.
-
-**Revenue Applications**: Client project tracking with timelines and deliverables (know exactly where money is), course development pipelines from conception to launch (build assets that sell repeatedly),
-student progress monitoring at scale (serve unlimited students), automated client onboarding workflows (less manual work = more capacity),
-billable hour tracking linked to projects (never miss revenue).
-
-**Setup**: Token stored in `.env`. If expired, get fresh token at monday.com → Profile → Developers → My Access Tokens.
-
----
-
-# Claude Code Configuration - SPARC Development Environment
-
-## 📋 System Inventory
-
-**Location**: `.claude/system-inventory.json`
-
-Complete inventory of installed applications, tools, and services available for integration:
-- **MCP Servers**: Google Workspace, Office 365 (auto-load on startup)
-- **Optional MCPs**: Claude Flow, RUV Swarm, Flow Nexus (load only when requested)
-- **50+ CLI Tools** (git, docker, npm, python, etc.)
-- **20+ Docker Services** (n8n, databases, social media tools)
-- **IDEs** (VS Code, Cursor, Windsurf)
-- **3D Tools** (Blender 4.3.0 with access to 800,000+ 3D models via datasets)
-
-**Quick Reference**: Check `.claude/system-inventory.json` for searchable list
-**Full Details**: See `docs/installed-applications-inventory.md`
-
-### MCP Auto-Load Configuration
-
-**Auto-loads on Claude startup** (`.claude/mcp_settings.json`):
-- ✅ **Google Workspace**: Gmail, Drive, Calendar, Docs, Sheets, Slides, Classroom
-- ✅ **Office 365**: Outlook, Teams, Planner, OneDrive, SharePoint, Contacts
-
-**Load only when requested** (disabled: true):
-- ⏸️ **Claude Flow**: Swarm coordination, neural training (load only when requested)
-- ⏸️ **RUV Swarm**: Enhanced swarm orchestration (load only when requested)
-- ⏸️ **Flow Nexus**: Cloud orchestration, sandboxes (load only when requested)
-
-### API Keys & Authentication
-
-**OAuth-based (no API keys required):**
-- Google Workspace: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-*.json`
-- Office 365: `C:\Users\MarieLexisDad\.office-mcp-tokens.json`
-
-**API Keys (configured in `.env`):**
-- **OPENAI_API_KEY**: OpenAI services (GPT, DALL-E, Whisper, embeddings)
-- **OPENROUTER_API_KEY**: OpenRouter (300+ LLMs, free models, image generation)
-
-**Helper Scripts:**
-- `scripts/api-helpers/openai_helper.py` - Full OpenAI API access
-- `scripts/api-helpers/openrouter_helper.py` - OpenRouter with free models
-- `scripts/api-helpers/README.md` - Documentation and examples
-
-**Note**: Real `.env` file should exist in root but is gitignored. Use `.env.example` as template.
-
----
-
-## 🤖 AI API SERVICES (OpenAI, OpenRouter, Grok 4 & GLM-4.6)
-
-**Ask Before Using**: Claude will always ask permission before using paid API services.
-
-### OpenAI API Capabilities
-
-**Status**: ✅ Configured (OPENAI_API_KEY in .env)
-**Helper**: `scripts/api-helpers/openai_helper.py`
-
-**Available Services:**
-
-**1. Image Generation**
-- **GPT Image 1**: Latest model (2025), superior instruction following, text rendering
-- **DALL-E 3**: High-quality images, 1024x1024 to 1792x1024
-- **DALL-E 2**: Image editing and variations
-- **Use for**: Product designs, illustrations, concept art, marketing materials
-
-**2. Language Models**
-- **GPT-4o**: Multimodal (text + images), fast, cost-effective
-- **o1**: Advanced reasoning for complex problems
-- **GPT-4 Turbo**: High performance for complex tasks
-- **Use for**: Complex reasoning, code generation, analysis
-
-**3. Vision Analysis**
-- **GPT-4o Vision**: Analyze images, describe content, extract information
-- **Use for**: Screenshot analysis, document understanding, visual QA
-
-**4. Audio**
-- **Whisper**: Speech-to-text transcription, multiple languages
-- **TTS (Text-to-Speech)**: 6 voices, natural speech generation
-- **Use for**: Transcription, voiceovers, accessibility
-
-**5. Embeddings**
-- **text-embedding-3**: Semantic search, similarity, clustering
-- **Use for**: Document search, recommendations, classification
-
-**Claude Code Usage Protocol:**
-```
-User: "Create an image of a modern office"
-Claude: "Would you like me to use OpenAI's GPT Image 1 API to generate this image?
-         This will use your OPENAI_API_KEY. (Estimated cost: ~$0.04)"
-User: "Yes"
-Claude: [Generates image using openai_helper.py]
-```
-
-### OpenRouter API Capabilities
-
-**Status**: ✅ Configured (OPENROUTER_API_KEY in .env)
-**Helper**: `scripts/api-helpers/openrouter_helper.py`
-
-**Why Use OpenRouter:**
-- Access to **300+ LLM models** through one API
-- **Free models available** (Mistral, DeepSeek, Llama, Gemma)
-- Automatic **cost optimization** and **fallback routing**
-- Models not available elsewhere
-- **Multimodal support** (text + images)
-
-**Free Models Available (2025):**
-- **Mistral Small 3.1**: 24B params, multimodal, high quality
-- **DeepSeek R1**: Advanced reasoning, free
-- **Llama 4 Scout**: 109B total params, 512K context
-- **Gemma 7B**: Google's efficient model
-- **Phi-3 Mini**: Microsoft's small but capable model
-
-**Paid Models (Cost-Optimized):**
-- GPT-4o, Claude 3.5 Sonnet, Gemini Pro
-- Auto-routing to cheapest available model
-- Fallback if primary model fails
-
-**Features:**
-- **Chat Completions**: Any model, any provider
-- **Vision/Multimodal**: Image analysis with vision models
-- **Cost Optimization**: Auto-select cheapest model for task
-- **Fallback Routing**: Try multiple models automatically
-
-**Claude Code Usage Protocol:**
-```
-User: "Analyze this complex problem"
-Claude: "Would you like me to use OpenRouter's free DeepSeek R1 model for reasoning?
-         (No cost - free tier available)"
-User: "Yes"
-Claude: [Uses openrouter_helper.py with free model]
-```
-
-**Or for paid models:**
-```
-User: "I need the best response for this"
-Claude: "Would you like me to use OpenRouter's Claude 3.5 Sonnet?
-         This will use your OPENROUTER_API_KEY. I can also use a free model instead.
-         Which would you prefer?"
-User: "Use Claude 3.5"
-Claude: [Uses paid model via OpenRouter]
-```
-
-### When Claude Should Offer API Usage
-
-**ALWAYS ASK before using APIs for:**
-- Image generation (OpenAI GPT Image, DALL-E)
-- Advanced reasoning beyond Claude's capability (OpenAI o1, DeepSeek R1)
-- Audio transcription (Whisper)
-- Text-to-speech (TTS)
-- Using paid models (specify cost estimate)
-
-**Mention FREE options when:**
-- User needs LLM capability that could use OpenRouter free models
-- Task could benefit from different model perspective
-- User mentions wanting to save costs
-
-**Example Prompts Claude Should Use:**
-- "Would you like me to generate images using OpenAI's API? (Cost: ~$0.04/image)"
-- "I can use OpenRouter's free DeepSeek R1 model for advanced reasoning. Would you like me to do that?"
-- "For this vision task, I can analyze it myself or use GPT-4o Vision API for more detail. Which do you prefer?"
-- "Would you like me to transcribe this audio using Whisper API? (Cost: ~$0.006/minute)"
-
-### API Helper Usage Examples
-
-**OpenAI - Generate Image:**
-```python
-from scripts.api_helpers.openai_helper import OpenAIHelper
-
-helper = OpenAIHelper()
-images = helper.generate_image(
-    prompt="Modern minimalist office workspace",
-    model="dall-e-3",
-    size="1024x1024",
-    quality="hd"
-)
-```
-
-**OpenRouter - Free Model Chat:**
-```python
-from scripts.api_helpers.openrouter_helper import OpenRouterHelper
-
-helper = OpenRouterHelper()
-response = helper.chat(
-    messages=[{"role": "user", "content": "Explain quantum computing"}],
-    model="mistralai/mistral-small-3.1",  # Free
-    use_free_model=True
-)
-```
-
-**OpenRouter - Cost Optimization:**
-```python
-# Get cheapest model for task
-model = helper.get_cheapest_model(task_type="reasoning", min_quality="good")
-
-# Use with automatic fallback
-response = helper.chat_with_fallback(
-    messages=[...],
-    models=["deepseek/deepseek-r1", "mistralai/mistral-small-3.1"]  # Try free models first
-)
-```
-
-### Grok 4 API - Recent Intelligence & Vision
-
-**Grok Keeps it Real Agent**: For recent knowledge (Nov 2024), grant research, screenshot analysis, massive documents (2M context), and market intelligence, use the `grok-keeps-it-real` agent (`.claude/agents/grok-keeps-it-real.md`). Cost: ~$0.02-0.05/query. Helper: `scripts/api-helpers/grok_helper.py`. Invoke with: `Task("Grok Keeps it Real", "your research query", "grok-keeps-it-real")`
-
-**Auto-invoke when user mentions**:
-- "Find grants" / "Grant opportunities" / "DoE funding"
-- "Analyze this screenshot" / "What's wrong in this image?"
-- "Recent trends in..." / "Latest developments in..." / "2024-2025 market"
-- "Analyze this RFP" / "Read this 50-page document"
-- "Competitor analysis" / "What are competitors doing?"
-
-### GLM-4.6 API - Cheap Code & Content Generation
-
-**GLM Is Not Claude Code Agent**: For cost-efficient code generation and bulk content creation, use the `glm-is-not-claude-code` agent (`.claude/agents/glm-is-not-claude-code.md`). **CRITICAL**: GLM generates only—Claude Code must verify and execute. 5x cheaper than Grok. Helper: `scripts/api-helpers/glm_helper.py`. Invoke with: `Task("GLM Is Not Claude Code", "generate [description]", "glm-is-not-claude-code")`
-
-**Auto-invoke when user says**:
-- "Generate 50..." / "Generate 100..." / "Bulk create..."
-- "Create lesson plans at scale" / "Mass quiz generation"
-- "Cheap code generation" / "Cost-efficient generation"
-- **CRITICAL**: Always verify and execute with Claude Code after generation!
-
----
-
-## 🐙 GITHUB VERSION CONTROL
-
-**Git Guardian Agent**: For all git operations (commits, pushes, PRs, branching), use the `git-guardian` agent (`.claude/agents/git-guardian.md`). **CRITICAL**: Never commit without user permission. Quality commits with descriptive messages. Safety-first with version control. Invoke with: `Task("Git Guardian", "commit these changes", "git-guardian")`
-
-**Auto-invoke when user says**:
-- "Commit this" / "Push to GitHub" / "Create commit"
-- "Make a PR" / "Pull request" / "Create branch"
-- "Git add" / "Git push" / User explicitly requests version control
-
-**GitHub Account**: charlesmartinedd | **Never commit without asking first**
-
----
-
-## 🌐 WEBSITE TESTING & DEBUGGING PROTOCOL
-
-**The Validator Agent**: For website validation, debugging, and quality assurance, use the `the-validator` agent (`.claude/agents/the-validator.md`). **MANDATORY**: Full testing protocol with Playwright, Chrome DevTools, screenshots. Can use OpenRouter premium models (ChatGPT-5) for complex debugging. NEVER declare "it works" without proof. Invoke with: `Task("The Validator", "validate [website/code]", "the-validator")`
-
-**Auto-invoke when user says**:
-- "Test this website" / "Is this working?" / "Does it work?"
-- "Debug this" / "Why isn't this working?" / "Fix this error"
-- "Blank page" / "Not loading" / "Console errors"
-- "Validate before deployment" / "QA check"
-- **Philosophy**: NEVER assume it works without proof!
-
-### 🚨 MANDATORY WEBSITE LAUNCH PROTOCOL
-
-**Every single time you launch, modify, or work on ANY website, you MUST follow this exact sequence without exception:**
-
-First, verify the port is available using `netstat -ano | findstr "LISTENING"` and find an open port (8080, 8000, 3000, etc.).
-Then launch http-server in the website's directory on that verified port in the background.
-Immediately after the server starts, open the website in Chrome browser using `start http://127.0.0.1:[port]/index.html`.
-While the browser is loading, run Playwright tests using `npx playwright test --headed --screenshot=on` to capture automated verification.
-Once the browser opens, manually press F12 to open Chrome DevTools and check three critical tabs: Console (must show zero red errors), Network (all resources must return 200 status, no 404s), and Elements (verify HTML structure and CSS is applied).
-Take screenshots of the working website using Playwright's screenshot feature and save them to the screenshots folder with descriptive names.
-If ANY errors appear in Console or Network tabs, stop and debug immediately using DevTools - do not proceed until all errors are resolved.
-Only after ALL checks pass (automated tests green, console clean, network clean, screenshots captured) can you declare the website working.
-Document what was tested in a brief summary and ask the user if they want to see the test results.
-This is NOT optional - this protocol must be executed completely for every website interaction, every time, without shortcuts or assumptions.
-
-### Installed Testing Tools
-
-**Status**: ✅ Fully configured and ready
-- **Playwright** v1.56.1 - Automated browser testing
-- **Puppeteer** v24.26.1 - Headless Chrome automation
-- **Chrome** - Full browser with DevTools
-- **http-server** - Local web server for testing
-
-### MANDATORY Testing Workflow
-
-**Every time you work on a website, you MUST:**
-
-1. **Before Starting** - Verify port availability
-   ```bash
-   netstat -ano | findstr "LISTENING" | findstr ":8080"
-   # Find an open port if 8080 is taken
-   ```
-
-2. **Launch Local Server** - Always test on http-server, never file://
-   ```bash
-   cd [website-directory]
-   npx http-server -p [available-port] -o /index.html
-   ```
-
-3. **Automated Testing** - Use Playwright to verify functionality
-   ```bash
-   cd [website-directory]
-   npx playwright test
-   # Or run specific test
-   npx playwright test [test-file.js]
-   ```
-
-4. **Manual Browser Testing** - Open in actual Chrome to verify UX
-   ```bash
-   start http://127.0.0.1:[port]/[page.html]
-   ```
-
-5. **Screenshot Verification** - Capture visual proof
-   ```bash
-   npx playwright test --headed --screenshot=on
-   # Screenshots saved to test-results/ or screenshots/
-   ```
-
-6. **DevTools Debugging** - When issues are found
-   - Open Chrome DevTools (F12)
-   - Check Console for errors
-   - Check Network tab for failed requests
-   - Use Elements tab to inspect HTML/CSS
-   - Use Lighthouse for performance audit
-
-### Common Website Issues & Solutions
-
-**Problem: Blank Page**
-```bash
-# Check browser console for errors
-# Likely causes: Missing files, CORS issues, JavaScript errors
-# Solution: Use http-server, check file paths, verify all assets load
-```
-
-**Problem: Images Not Loading**
-```bash
-# Check Network tab in DevTools
-# Verify image paths are relative, not absolute
-# Check: <img src="./images/pic.jpg"> not <img src="C:/Users/...">
-```
-
-**Problem: JavaScript Not Working**
-```bash
-# Open Console in DevTools
-# Look for syntax errors, undefined variables, failed imports
-# Verify script tags are in correct order
-```
-
-**Problem: CSS Not Applied**
-```bash
-# Check Elements tab in DevTools > Computed styles
-# Verify CSS file loads in Network tab
-# Check for typos in class names or selectors
-```
-
-**Problem: CORS Errors**
-```bash
-# Never use file:// protocol for testing
-# Always use http-server for local development
-# CORS only affects HTTP requests, not file:// access
-```
-
-### Playwright Test Examples
-
-**Basic Test Template** (save as `test-website.js`):
-```javascript
-const { test, expect } = require('@playwright/test');
-
-test('website loads successfully', async ({ page }) => {
-  // Navigate to page
-  await page.goto('http://127.0.0.1:8080/index.html');
-
-  // Wait for content to load
-  await page.waitForLoadState('networkidle');
-
-  // Take screenshot
-  await page.screenshot({ path: 'screenshots/homepage.png' });
-
-  // Verify title
-  await expect(page).toHaveTitle(/Alexandria/);
-
-  // Check for critical elements
-  const header = await page.locator('header').count();
-  expect(header).toBeGreaterThan(0);
-});
-
-test('interactive elements work', async ({ page }) => {
-  await page.goto('http://127.0.0.1:8080/index.html');
-
-  // Click a button
-  await page.click('.country-card');
-
-  // Wait for modal to appear
-  await page.waitForSelector('.modal', { state: 'visible' });
-
-  // Take screenshot of modal
-  await page.screenshot({ path: 'screenshots/modal-open.png' });
-
-  // Verify modal content
-  const modalVisible = await page.isVisible('.modal');
-  expect(modalVisible).toBeTruthy();
-});
-```
-
-**Run Playwright Tests**:
-```bash
-# Run all tests (headless)
-npx playwright test
-
-# Run with visible browser
-npx playwright test --headed
-
-# Run with debugging
-npx playwright test --debug
-
-# Generate HTML report
-npx playwright test --reporter=html
-npx playwright show-report
-```
-
-### Chrome DevTools via Playwright
-
-**Capture Console Logs**:
-```javascript
-const { chromium } = require('playwright');
-
-(async () => {
-  const browser = await chromium.launch({ headless: false });
-  const page = await browser.newPage();
-
-  // Listen to console
-  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-
-  // Listen to errors
-  page.on('pageerror', error => console.log('PAGE ERROR:', error));
-
-  await page.goto('http://127.0.0.1:8080/index.html');
-
-  // Keep browser open for manual inspection
-  await page.pause();
-})();
-```
-
-**Network Request Monitoring**:
-```javascript
-// Intercept network requests
-page.on('request', request => {
-  console.log('>>', request.method(), request.url());
-});
-
-page.on('response', response => {
-  console.log('<<', response.status(), response.url());
-});
-```
-
-### Testing Checklist (Use Every Time)
-
-**Before declaring a website "working", verify:**
-
-- [ ] Port is available and verified before server launch
-- [ ] Server launches successfully on http://127.0.0.1:[port]
-- [ ] Homepage loads without errors in browser console
-- [ ] All images load correctly (check Network tab)
-- [ ] All CSS styles apply (check Elements tab)
-- [ ] All JavaScript runs without errors (check Console)
-- [ ] All interactive elements work (buttons, links, modals)
-- [ ] Page navigation works (prev/next, menu items)
-- [ ] Mobile responsive design works (test different viewport sizes)
-- [ ] No 404 errors in Network tab
-- [ ] Lighthouse score is acceptable (run in DevTools)
-- [ ] Playwright tests pass (if tests exist)
-- [ ] Screenshots captured showing working features
-
-### Directory Structure for Tests
-
-```
-website-project/
-├── index.html
-├── assets/
-├── tests/                    # Playwright tests
-│   ├── homepage.spec.js
-│   ├── navigation.spec.js
-│   └── interactions.spec.js
-├── test-results/             # Auto-generated test results
-├── screenshots/              # Test screenshots
-├── playwright.config.js      # Playwright configuration
-└── package.json
-```
-
-### Quick Testing Commands
-
-```bash
-# Test single page quickly
-cd [website-dir]
-npx http-server -p 8080 &
-npx playwright test --headed
-
-# Debug a failing page
-npx playwright test --debug --headed
-
-# Test mobile viewport
-npx playwright test --headed --device="iPhone 12"
-
-# Full test suite with report
-npx playwright test --reporter=html && npx playwright show-report
-
-# Check for console errors
-node -e "
-const { chromium } = require('playwright');
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-  page.on('console', msg => console.log(msg.text()));
-  page.on('pageerror', err => console.error(err));
-  await page.goto('http://127.0.0.1:8080/index.html');
-  await page.waitForTimeout(3000);
-  await browser.close();
-})();
-"
-```
-
-### CRITICAL Rules
-
-1. **NEVER assume it works** - Always test in actual browser
-2. **NEVER use file:// protocol** - Always use http-server
-3. **ALWAYS check port availability first** - Use netstat before launching
-4. **ALWAYS open DevTools Console** - Check for errors before declaring success
-5. **ALWAYS take screenshots** - Visual proof that features work
-6. **ALWAYS test interactivity** - Click buttons, test navigation
-7. **ALWAYS verify on mobile viewports** - Test responsive design
-8. **ALWAYS run Playwright tests** - If tests exist, they must pass
-9. **ALWAYS check Network tab** - Verify all resources load (200 status)
-10. **ALWAYS generate test reports** - Create HTML reports for documentation
-
-### When to Write New Tests
-
-**Write Playwright tests for:**
-- New interactive features (modals, forms, navigation)
-- Critical user flows (signup, checkout, reading)
-- Regression prevention (bugs that were fixed)
-- Performance benchmarks (load times, animations)
-- Mobile responsiveness (different viewport sizes)
-
-**Don't write tests for:**
-- Static content pages (unless complex)
-- Prototype/experimental features
-- One-time demos
-
-### Debugging Workflow Example
-
-```bash
-# 1. Check port availability
-netstat -ano | findstr "LISTENING" | findstr ":8080"
-
-# 2. Launch server in background
-cd C:\Users\MarieLexisDad\alexandrias-world-website
-npx http-server -p 8080 &
-
-# 3. Run automated tests
-npx playwright test --headed --screenshot=on
-
-# 4. If tests fail, debug with browser open
-npx playwright test --debug
-
-# 5. Check console logs
-# (Open DevTools manually in browser or use Playwright console capture)
-
-# 6. Take screenshots of issues
-npx playwright test --headed --screenshot=only-on-failure
-
-# 7. Generate report
-npx playwright test --reporter=html
-npx playwright show-report
-```
-
-### Remember
-
-**Testing is NOT optional.** Every website must be tested before being shown to the user or client. Use the tools, follow the checklist, capture proof. If you can't verify it works, don't claim it works.
-
----
-
-## 📸 SCREENSHOT REFERENCES
-
-**Default Location**: `C:\Users\MarieLexisDad\Pictures\Screenshots`
-
-### Automatic Screenshot Handling
-
-When the user references a screenshot in conversation:
-1. Check the Screenshots folder for the most recent file(s)
-2. Use the Read tool to view the screenshot
-3. Analyze the image content to understand the user's reference
-
-**Example user references:**
-- "Look at the screenshot I just took"
-- "Can you check that error in the screenshot?"
-- "See what I mean in the image"
-
-**How to handle:**
-```bash
-# List recent screenshots (sorted by modification time, newest first)
-dir "C:\Users\MarieLexisDad\Pictures\Screenshots" /O-D /B
-
-# View the most recent screenshot
-Read "C:\Users\MarieLexisDad\Pictures\Screenshots\[filename]"
-```
-
-**Key Points:**
-- Always check for the most recently modified screenshot when user makes a vague reference
-- Screenshots are viewable using the Read tool (supports PNG, JPG, etc.)
-- If multiple screenshots exist, show the most recent or ask for clarification
-
----
-
-## 🎥 SCREEN RECORDING REFERENCES
-
-**Default Location**: `C:\Users\MarieLexisDad\Videos\Screen Recordings`
-
-### Automatic Screen Recording Handling
-
-When the user references a screen recording in conversation:
-1. Check the Screen Recordings folder for the most recent file(s)
-2. Note the recording filename and timestamp
-3. Provide information about the recording or ask for clarification on what to analyze
-
-**Example user references:**
-- "Look at the screen recording I just made"
-- "Can you check that video I recorded?"
-- "See the process in the recording"
-
-**How to handle:**
-```bash
-# List recent screen recordings (sorted by modification time, newest first)
-dir "C:\Users\MarieLexisDad\Videos\Screen Recordings" /O-D /B
-
-# Get details about the most recent recording
-dir "C:\Users\MarieLexisDad\Videos\Screen Recordings" /O-D
-```
-
-**Key Points:**
-- Always check for the most recently modified recording when user makes a vague reference
-- Screen recordings are typically MP4, WMV, or AVI format
-- If multiple recordings exist, show the most recent or ask for clarification
-- Note: Video content analysis requires user to describe what they want examined
-
----
-
-## 📧 UNIFIED EMAIL & PRODUCTIVITY SUITE
-
-**Dual Productivity Ecosystem**: Google Workspace + Office 365/Microsoft 365
-**Philosophy**: Use the best tool for each task - both systems work together seamlessly
-
-### Email Account Selection Protocol
-
-**Default for Gmail sending via Python script**: charlesmartinedd@gmail.com (personal). Only ask if user specifies work account or Office 365.
-
-**Available Email Accounts:**
-- **Google Workspace Personal**: charlesmartinedd@gmail.com (default)
-- **Google Workspace Work**: cmartin@alexandriasdesign.com
-- **Office 365/Microsoft 365**: (linked Microsoft account)
-
----
-
-## 🔑 GOOGLE WORKSPACE ACCESS
-
-**Getting to the Google Agent**: For all Google Workspace and Cloud operations (Gmail, Drive, Docs, Sheets, Slides, Calendar, Classroom, Cloud AI APIs), use the `getting-to-the-google` agent (`.claude/agents/getting-to-the-google.md`). Manages 3 accounts seamlessly, 11 APIs, revenue-generating Cloud services. Invoke with: `Task("Getting to the Google", "your Google task", "getting-to-the-google")`
-
-**Auto-invoke when user says**:
-- "Send email" / "Gmail" / "Create Google Doc"
-- "Share in Drive" / "Google Sheets" / "Slides presentation"
-- "Schedule meeting" / "Google Calendar"
-- "OCR this image" / "Translate to Spanish" / "Transcribe audio" (Cloud AI)
-- "Google Classroom" / "Course delivery"
-
-**Accounts**: charlesmartinedd@gmail.com (personal), cmartin@alexandriasdesign.com (work), lmcmtutors@gmail.com (bills) ✅
-
-**OAuth Tokens**: `C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\token-*.json`
-**Full details**: See Getting to the Google agent file
-
----
-
-## 🏢 OFFICE 365 / MICROSOFT 365 ACCESS
-
-**Money Making Microsoft Agent**: For all Microsoft 365 operations (Outlook, Teams, Planner, OneDrive, SharePoint, Contacts, Calendar), use the `money-making-microsoft` agent (`.claude/agents/money-making-microsoft.md`). 30 MCP tools, Teams transcripts, Planner boards (8 tools!), enterprise features. Invoke with: `Task("Money Making Microsoft", "your M365 task", "money-making-microsoft")`
-
-**Auto-invoke when user says**:
-- "Teams meeting" / "Schedule Teams call" / "Meeting transcript"
-- "Planner board" / "Create tasks" / "Project management"
-- "Outlook" / "Enterprise email" / "Email rules"
-- "SharePoint" / "OneDrive" / "Version control"
-- "Meeting intelligence" / "AI summary" / "Action items"
-
-**Status**: ✅ MCP tools loaded and active (30 tools total)
-
-**Tokens**: `C:\Users\MarieLexisDad\.office-mcp-tokens.json`
-**Full details**: See Money Making Microsoft agent file
-
----
-
-## 🤝 GOOGLE WORKSPACE + OFFICE 365: UNIFIED WORKFLOW
-
-### How They Work Together
-
-**Use both systems to their strengths:**
-
-**For Email:**
-- Google Workspace: Personal and work correspondence, simple workflows
-- Office 365: Enterprise email with advanced rules, integration with Teams
-
-**For Documents:**
-- Google Docs: Quick collaborative editing, real-time co-authoring, simple docs
-- Microsoft Word: Complex formatting, advanced features, professional documents
-
-**For Spreadsheets:**
-- Google Sheets: Simple data, quick sharing, collaborative analysis
-- Microsoft Excel: Complex analysis, Power Query, advanced formulas, dashboards
-
-**For Presentations:**
-- Google Slides: Quick presentations, easy sharing, web-first
-- PowerPoint: Professional presentations, advanced design, animations
-
-**For File Storage:**
-- Google Drive: Easy sharing, public links, cross-platform access
-- OneDrive/SharePoint: Enterprise storage, version control, compliance, permissions
-
-**For Collaboration:**
-- Google Meet: Quick video calls, easy scheduling
-- Microsoft Teams: Full collaboration platform, channels, persistent chat, meeting records
-
-**For Task Management:**
-- Google Tasks/Calendar: Simple task tracking integrated with Gmail
-- Microsoft Planner: Visual project boards, team task management
-
-**For Notes:**
-- Google Keep: Quick notes, lists, reminders
-- OneNote: Structured notebooks, rich formatting, organization
-
-### Integration Patterns
-
-**Cross-Platform File Sharing:**
-- Store files in Google Drive, share links in Teams
-- Save OneDrive files, share in Gmail
-- Reference both systems for complete file access
-
-**Calendar Sync:**
-- Export/import events between Google Calendar and Outlook
-- Use both calendars for complete scheduling view
-
-**Email Coordination:**
-- Forward between accounts when needed
-- Use appropriate account for context (personal vs work vs enterprise)
-
-**Unified Search:**
-- Search Google Workspace with native tools
-- Search Office 365 with `mcp__office-365-mcp__search`
-- Check both systems for comprehensive results
-
-### Authentication
-
-**Google Workspace:**
-```bash
-# Uses pre-configured OAuth tokens
-# Located in: C:\Users\MarieLexisDad\Old Files\google-workspace-mcp\
-```
-
-**Office 365:**
-```javascript
-// Check authentication status
-mcp__office-365-mcp__check_auth_status()
-
-// Authenticate if needed
-mcp__office-365-mcp__authenticate()
-```
-
-### Example Workflows
-
-**Workflow 1: Send email with attachment from either system**
-```
-1. Ask user: "Which email account?"
-2. If Google: Use Google Workspace MCP
-3. If Office 365: Use mcp__office-365-mcp__email
-4. Attach files from either Drive or OneDrive
-```
-
-**Workflow 2: Schedule meeting with both calendars**
-```
-1. Create event in Google Calendar (work schedule)
-2. Create same event in Outlook (enterprise calendar)
-3. Send meeting invite from appropriate email system
-```
-
-**Workflow 3: Collaborative project**
-```
-1. Create Planner board in Office 365 for task tracking
-2. Store collaborative docs in Google Drive for easy sharing
-3. Use Teams for communication and meetings
-4. Reference everything from both systems
-```
-
----
-
-## 📊 PRODUCTIVITY PLATFORM INTELLIGENCE
-
-**Full Documentation**: `docs/PRODUCTIVITY_PLATFORM_WORKFLOWS.md`
-
-### Available Capabilities
-
-**Google Workspace (11 APIs via Python)**:
-Gmail • Drive • Docs • Sheets • Slides • Calendar • Forms • Cloud Vision • Vertex AI • BigQuery • Cloud Storage
-
-**Microsoft 365 (30 MCP Tools)**:
-Email • Teams (meetings/chat/channels) • Calendar • Planner (8 tools) • OneDrive/SharePoint • Contacts • Search • Notifications
-
-### Auto-Suggestion Protocol
-
-**Claude should PROACTIVELY suggest the best tool based on context without asking unnecessary questions.**
-
-#### Email Operations
-
-**Default: Gmail** (charlesmartinedd@gmail.com) via `python scripts/send_simple_email.py`
-**Suggest Outlook when**: User mentions business/enterprise features, email rules, focused inbox
-
-**Quick send (no questions)**:
-```python
-# Edit scripts/send_simple_email.py with recipient, subject, body
-# Run: python scripts/send_simple_email.py
-```
-
-#### Document Creation
-
-**Suggest Google Docs when**: User wants quick collaborative docs, easy sharing, simple formatting
-```python
-python scripts/create_google_doc.py  # Edit with title and content
-```
-
-**Suggest Microsoft Word when**: User wants complex formatting, professional documents, templates
-```javascript
-mcp__office-365-mcp__files({operation: "upload", ...})
-```
-
-**Suggest Google Sheets when**: Simple data, collaborative spreadsheets, quick charts
-**Suggest Microsoft Excel when**: Advanced formulas, Power Query, complex analysis
-
-**Suggest Google Slides when**: Quick presentations, web-first sharing
-**Suggest Microsoft PowerPoint when**: Professional design, advanced animations
-
-#### Project & Task Management
-
-**Default: Microsoft Planner** (visual boards, team collaboration)
-```javascript
-mcp__office-365-mcp__planner_task({
-  operation: "create",
-  planId: "...",
-  title: "Task name",
-  assignedTo: "user-id",
-  dueDateTime: "2025-11-15T17:00:00Z"
-})
-```
-
-**Fallback: Google Calendar** (simple personal tasks)
-
-#### Team Communication
-
-**Default: Microsoft Teams** (full collaboration, transcripts, recordings)
-```javascript
-mcp__office-365-mcp__teams_meeting({operation: "create", ...})
-mcp__office-365-mcp__teams_channel({operation: "create_message", ...})
-```
-
-**Fallback: Google Meet** (quick simple calls)
-
-#### File Storage & Sharing
-
-**Suggest Google Drive when**: Easy public sharing, cross-platform, unlimited storage
-```python
-# List files, share publicly, simple access
-python scripts/audit_google_drive.py
-```
-
-**Suggest OneDrive/SharePoint when**: Enterprise security, version control, permissions
-```javascript
-mcp__office-365-mcp__files({operation: "search", query: "...", fileTypes: ["pdf"]})
-```
-
-#### AI/ML & Advanced Analytics
-
-**Always suggest Google Cloud for**:
-- **Image analysis**: Cloud Vision API (OCR, labels, faces, logos)
-- **ML models**: Vertex AI (training, predictions, AutoML)
-- **Big data**: BigQuery (SQL on massive datasets)
-
-```python
-# Claude should offer these capabilities when user mentions:
-# "analyze image" → Cloud Vision
-# "machine learning" → Vertex AI
-# "big dataset" / "analytics" → BigQuery
-```
-
-### Decision Tree for Auto-Suggestions
-
-```
-User says: "send email" → Use Gmail (default), no questions
-User says: "create document" → Ask: "Collaborative (Docs) or Professional (Word)?"
-User says: "manage project" → Use Planner, no questions
-User says: "team meeting" → Use Teams, no questions
-User says: "analyze image" → Offer Cloud Vision
-User mentions: "big data" → Suggest BigQuery
-User wants: "file sharing" → Ask context, suggest Drive (easy) or OneDrive (secure)
-```
-
-### Platform Selection Summary
-
-| Use Case | Tool | Why |
-|----------|------|-----|
-| Quick email | Gmail | Faster, simpler |
-| Business email | Outlook | Enterprise features |
-| Team docs | Google Docs | Real-time collaboration |
-| Professional docs | Word | Advanced formatting |
-| Simple data | Sheets | Quick, collaborative |
-| Complex data | Excel | Power Query, advanced |
-| Project management | Planner | Visual boards, assignments |
-| Video meetings | Teams | Transcripts, recordings |
-| File sharing | Drive | Easy public links |
-| Enterprise storage | OneDrive | Security, compliance |
-| Image analysis | Cloud Vision | OCR, labels, detection |
-| ML models | Vertex AI | Training, predictions |
-| Big data | BigQuery | SQL on huge datasets |
-
-### Test Scripts
-
-```bash
-# Test all Google APIs
-python scripts/test_all_google_apis.py
-
-# List Office 365 capabilities
-python scripts/test_office365_capabilities.py
-```
-
-**Google Enterprise AI/ML APIs** (Work Account: cmartin@alexandriasdesign.com):
-- **Cloud Vision**: Image analysis, OCR → Suggest when user mentions "analyze image" or "extract text"
-- **Speech-to-Text**: Audio transcription → Suggest when user mentions "transcribe" or "audio to text"
-- **Text-to-Speech**: Voiceover generation → Suggest when user mentions "voiceover" or "narration"
-- **Cloud Translation**: Translate to 100+ languages → Suggest when user mentions "translate" or other languages
-- **Natural Language**: Text analysis, sentiment → Suggest when user mentions "analyze text" or "sentiment"
-- **Video Intelligence**: Video analysis → Suggest when user mentions "analyze video" or "video tags"
-- **Vertex AI**: Custom ML models → Suggest when user mentions "machine learning" or "AI model"
-
-**Full API Guide**: `docs/GOOGLE_ENTERPRISE_API_GUIDE.md` (17 working APIs, 87 enabled)
-
----
-
-## 🎨 IMAGE & 3D CREATION
-
-**Bob Ross Image 3D Makers Agent**: For AI image generation (OpenAI, OpenRouter) and 3D modeling (Blender, Google Scanned Objects), use the `bob-ross-image-3d-makers` agent (`.claude/agents/bob-ross-image-3d-makers.md`). Course covers, marketing materials, 3D models, simulations. "No mistakes, just happy little visuals." Invoke with: `Task("Bob Ross Image 3D Makers", "create [description]", "bob-ross-image-3d-makers")`
-
-**Auto-invoke when user says**:
-- "Create course cover" / "Design image" / "Marketing graphic"
-- "Generate 20 images" / "Batch image creation"
-- "3D model" / "Blender" / "Physics simulation"
-- "Render 3D" / "Create visual assets"
-- "DALL-E" / "AI image" / "Happy little visuals"
-
-**Tools**: Blender 4.3.0, OpenAI DALL-E, OpenRouter, Google 3D dataset | **Docs**: `docs/BLENDER_AND_3D_TOOLS.md`
-
-### Blender Capabilities
-
-**3D Modeling & Creation:**
-- Parametric modeling (cubes, spheres, cylinders, cones, etc.)
-- Mesh editing with boolean operations
-- Modifiers: subdivision, mirror, array, solidify
-- Curve and surface modeling
-- 3D text creation
-
-**Simulations:**
-- Physics: Rigid body, soft body dynamics
-- Fluids: Liquid and gas simulation
-- Cloth: Realistic fabric simulation
-- Particles: Complex particle systems
-- Smoke/Fire: Volumetric simulations
-- Hair/Fur: Dynamic hair systems
-- Ocean: Realistic ocean waves
-
-**Rendering:**
-- Cycles (photo-realistic path-tracing renderer)
-- Eevee (real-time rendering engine)
-- Workbench (fast preview rendering)
-- Compositing and post-processing
-
-**Import/Export Formats:**
-- OBJ, FBX, GLTF/GLB, STL, PLY, X3D
-- USD (Universal Scene Description)
-- Alembic, COLLADA, SVG, PDF
-
-**Python API:**
-- Python 3.11 (bpy module)
-- Headless rendering
-- Batch processing
-- Automation via scripts
-
-### 3D Model Dataset - Google Scanned Objects
-
-**Status**: ✅ Download script ready, Blender fully configured
-
-**Google Scanned Objects Dataset** ✅ READY TO DOWNLOAD
-- **Count**: 1,000+ high-quality 3D scanned household items
-- **Formats**: OBJ, MTL, JPG textures, 2D renderings
-- **License**: Creative Commons
-- **Quality**: Professional photogrammetry scans
-- **Use Cases**: Robotics, simulation, 3D graphics, ML training, product visualization
-
-**Download Script:**
-```bash
-# Download 2D renderings (recommended for quick start)
-python projects/3d-datasets/download_google_scanned_objects.py --renderings-only
-
-# Custom output directory
-python projects/3d-datasets/download_google_scanned_objects.py --output-dir ./datasets --renderings-only
-```
-
-**What's Included:**
-- Multi-view 2D renderings of all objects (several GB)
-- Various lighting and camera angles
-- Perfect for training neural networks
-- Full 3D meshes available via additional sources (see script help)
-
-**Documentation**: `projects/3d-datasets/README.md`
-
-**Integration with Blender:**
-Once downloaded, objects can be imported into Blender:
-```bash
-# Via command line
-blender --background --python import_scanned_object.py -- "path/to/object.obj"
-
-# Or use Blender GUI: File → Import → Wavefront (.obj)
-```
-
-**Resources:**
-- Research Paper: https://arxiv.org/abs/2204.11918
-- Blog Post: https://ai.googleblog.com/2022/06/scanned-objects-by-google-research.html
-- MuJoCo Models: https://github.com/kevinzakka/mujoco_scanned_objects
-
-**Blender 4.3.0** ✅ READY
-- Status: Fully installed and configured
-- Location: `C:\Users\MarieLexisDad\tools\blender\blender-4.3.0-windows-x64\blender.exe`
-- Use for: Modeling, rendering, simulations, import/export
-- Python API: Available for automation
-
-### Python Scripts Available
-
-**Location**: `scripts/`
-- `blender_info.py` - Show Blender capabilities and setup
-- `setup_3d_access.py` - Configure access to 3D datasets
-- `blender_examples/create_cube.py` - Create and render 3D cube
-- `blender_examples/physics_sim.py` - Physics simulation demo
-- `blender_examples/import_3d_model.py` - Import/render dataset models
-
-**Location**: `projects/3d-datasets/`
-- `download_google_scanned_objects.py` - Download Google Scanned Objects dataset
-- `README.md` - Dataset documentation and usage guide
-
-### Quick Commands
-
-```bash
-# Set Blender path
-set BLENDER_PATH=C:\Users\MarieLexisDad\tools\blender\blender-4.3.0-windows-x64\blender.exe
-
-# Show capabilities
-python scripts/blender_info.py
-
-# Create a 3D cube
-%BLENDER_PATH% --background --python scripts/blender_examples/create_cube.py
-
-# Run physics simulation
-%BLENDER_PATH% --background --python scripts/blender_examples/physics_sim.py
-
-# Import and render a model
-%BLENDER_PATH% --background --python scripts/blender_examples/import_3d_model.py -- "path/to/model.obj"
-```
-
-### Integration with Workflow
-
-**Blender can be used via Claude Code for:**
-- Creating 3D models programmatically
-- Running physics simulations
-- Batch rendering 3D scenes
-- Converting between 3D formats
-- Generating synthetic training data for AI/ML
-- Architectural visualization
-- Product design and prototyping
-
-**Example: Generate 3D model via Python**
-```python
-import subprocess
-
-blender_path = r"C:\Users\MarieLexisDad\tools\blender\blender-4.3.0-windows-x64\blender.exe"
-script_path = r"scripts/blender_examples/create_cube.py"
-
-subprocess.run([blender_path, "--background", "--python", script_path])
-```
-
----
-
-## 🚨 CRITICAL: CONCURRENT EXECUTION & FILE MANAGEMENT
+## 📁 FILE ORGANIZATION RULES
+
+**NEVER save to root folder. Use these directories:**
+- `/src` - Source code files
+- `/tests` - Test files
+- `/docs` - Documentation and markdown files
+- `/docs/guides` - Detailed topic guides (financial, testing, APIs, etc.)
+- `/config` - Configuration files
+- `/scripts` - Utility scripts
+- `/examples` - Example code
 
 **ABSOLUTE RULES**:
 1. ALL operations MUST be concurrent/parallel in a single message
 2. **NEVER save working files, text/mds and tests to the root folder**
 3. ALWAYS organize files in appropriate subdirectories
-4. **USE CLAUDE CODE'S TASK TOOL** for spawning agents concurrently, not just MCP
+4. **USE CLAUDE CODE'S TASK TOOL** for spawning agents concurrently
 
-### ⚡ GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
+---
+
+## 🔗 DETAILED GUIDES
+
+For comprehensive information on specific topics, see:
+
+### Financial & Revenue
+- **[Big Baller Financial Guide](docs/guides/BIG-BALLER-GUIDE.md)** - Saturday reviews, LunchMoney, ROI analysis, $30k/month goal
+
+### Automation & Workflows
+- **[Workflow Wizard Guide](docs/guides/WORKFLOW-WIZARD-GUIDE.md)** - N8N automation (programmatic only, NO GUI!)
+- **[Monday.com Integration](docs/guides/MONDAY-INTEGRATION.md)** - Project tracking, revenue operations center
+
+### Design & Prototyping
+- **[UI Design MCP Setup](docs/UI-DESIGN-MCP-SETUP.md)** - Material UI (50+ components, design tokens) + Playwright (browser automation, accessibility testing)
+
+### Product & Website Launch
+- **[Autonomous Product Launch Guide](docs/AUTONOMOUS-PRODUCT-LAUNCH-GUIDE.md)** - End-to-end product creation, Gumroad/Stripe, 20-30 min launches
+- **[Automated Website Launch with Stripe](docs/AUTOMATED-WEBSITE-LAUNCH-WITH-STRIPE.md)** - GitHub Pages deployment, payment integration, 45 min to live
+
+### AI & API Services
+- **[AI API Services Guide](docs/guides/AI-API-SERVICES-GUIDE.md)** - OpenAI, OpenRouter, Grok 4, usage protocols, costs
+
+### Testing & Quality
+- **[Website Testing Protocol](docs/guides/WEBSITE-TESTING-PROTOCOL.md)** - The Validator agent, Playwright, DevTools, mandatory testing checklist
+
+### Version Control
+- **[Git Version Control](docs/guides/GIT-VERSION-CONTROL.md)** - Git Guardian agent, commit best practices, GitHub CLI
+
+### Productivity Platforms
+- **[Google Workspace Guide](docs/guides/GOOGLE-WORKSPACE-GUIDE.md)** - 3 accounts, 11 APIs, Cloud AI services
+- **[Microsoft 365 Guide](docs/guides/MICROSOFT-365-GUIDE.md)** - 30 MCP tools, Teams, Planner, enterprise features
+- **[Productivity Platform Workflows](docs/PRODUCTIVITY_PLATFORM_WORKFLOWS.md)** - Cross-platform integration strategies
+
+### Visual Content Creation
+- **[Image & 3D Creation Guide](docs/BLENDER_AND_3D_TOOLS.md)** - Bob Ross agent, Blender 4.3.0, Google 3D datasets, AI image generation
+- **[Google Enterprise API Guide](docs/GOOGLE_ENTERPRISE_API_GUIDE.md)** - Vision, Speech, Translation, Vertex AI (17 working APIs)
+
+### Development Environment
+- **[SPARC Development Guide](docs/guides/SPARC-DEVELOPMENT-GUIDE.md)** - System inventory, MCP configuration, 59 agents, concurrent execution, coordination protocol
+
+### Media References
+- **[Screenshot & Screen Recording References](docs/guides/MEDIA-REFERENCES.md)** - Automatic handling of screenshots and screen recordings
+
+---
+
+## ⚡ CRITICAL EXECUTION RULES
+
+### GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
 
 **MANDATORY PATTERNS:**
 - **TodoWrite**: ALWAYS batch ALL todos in ONE call (5-10+ todos minimum)
@@ -1575,359 +559,47 @@ subprocess.run([blender_path, "--background", "--python", script_path])
 - **Bash commands**: ALWAYS batch ALL terminal operations in ONE message
 - **Memory operations**: ALWAYS batch ALL memory store/retrieve in ONE message
 
-### 🎯 CRITICAL: Claude Code Task Tool for Agent Execution
+### Claude Code Task Tool for Agent Execution
 
 **Claude Code's Task tool is the PRIMARY way to spawn agents:**
 ```javascript
 // ✅ CORRECT: Use Claude Code's Task tool for parallel agent execution
 [Single Message]:
-  Task("Research agent", "Analyze requirements and patterns...", "researcher")
+  Task("Research agent", "Analyze requirements...", "researcher")
   Task("Coder agent", "Implement core features...", "coder")
   Task("Tester agent", "Create comprehensive tests...", "tester")
   Task("Reviewer agent", "Review code quality...", "reviewer")
-  Task("Architect agent", "Design system architecture...", "system-architect")
 ```
 
-**MCP tools are ONLY for coordination setup:**
+**MCP tools are ONLY for coordination setup** (optional, advanced use cases):
 - `mcp__claude-flow__swarm_init` - Initialize coordination topology
 - `mcp__claude-flow__agent_spawn` - Define agent types for coordination
 - `mcp__claude-flow__task_orchestrate` - Orchestrate high-level workflows
 
-### 📁 File Organization Rules
-
-**NEVER save to root folder. Use these directories:**
-- `/src` - Source code files
-- `/tests` - Test files
-- `/docs` - Documentation and markdown files
-- `/config` - Configuration files
-- `/scripts` - Utility scripts
-- `/examples` - Example code
-
-## Project Overview
-
-This project uses SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology with Claude-Flow orchestration for systematic Test-Driven Development.
-
-## SPARC Commands
-
-### Core Commands
-- `npx claude-flow sparc modes` - List available modes
-- `npx claude-flow sparc run <mode> "<task>"` - Execute specific mode
-- `npx claude-flow sparc tdd "<feature>"` - Run complete TDD workflow
-- `npx claude-flow sparc info <mode>` - Get mode details
-
-### Batchtools Commands
-- `npx claude-flow sparc batch <modes> "<task>"` - Parallel execution
-- `npx claude-flow sparc pipeline "<task>"` - Full pipeline processing
-- `npx claude-flow sparc concurrent <mode> "<tasks-file>"` - Multi-task processing
-
-### Build Commands
-- `npm run build` - Build project
-- `npm run test` - Run tests
-- `npm run lint` - Linting
-- `npm run typecheck` - Type checking
-
-## SPARC Workflow Phases
-
-1. **Specification** - Requirements analysis (`sparc run spec-pseudocode`)
-2. **Pseudocode** - Algorithm design (`sparc run spec-pseudocode`)
-3. **Architecture** - System design (`sparc run architect`)
-4. **Refinement** - TDD implementation (`sparc tdd`)
-5. **Completion** - Integration (`sparc run integration`)
-
-## Code Style & Best Practices
-
-- **Modular Design**: Files under 500 lines
-- **Environment Safety**: Never hardcode secrets
-- **Test-First**: Write tests before implementation
-- **Clean Architecture**: Separate concerns
-- **Documentation**: Keep updated
-
-## 🚀 Available Agents (59 Total)
-
-### Specialized Domain Agents (New! - 9 Total)
-`big-baller` (financial tracking), `workflow-wizard` (n8n automation),
-`grok-keeps-it-real` (recent intelligence), `glm-is-not-claude-code` (cheap generation),
-`the-validator` (debugging & QA), `getting-to-the-google` (Google Workspace/Cloud),
-`money-making-microsoft` (M365 enterprise), `bob-ross-image-3d-makers` (visual creation),
-`git-guardian` (version control)
-
-### Core Development
-`coder`, `reviewer`, `tester`, `planner`, `researcher`
-
-### Swarm Coordination
-`hierarchical-coordinator`, `mesh-coordinator`, `adaptive-coordinator`, `collective-intelligence-coordinator`, `swarm-memory-manager`
-
-### Consensus & Distributed
-`byzantine-coordinator`, `raft-manager`, `gossip-coordinator`, `consensus-builder`, `crdt-synchronizer`, `quorum-manager`, `security-manager`
-
-### Performance & Optimization
-`perf-analyzer`, `performance-benchmarker`, `task-orchestrator`, `memory-coordinator`, `smart-agent`
-
-### GitHub & Repository
-`github-modes`, `pr-manager`, `code-review-swarm`, `issue-tracker`, `release-manager`, `workflow-automation`, `project-board-sync`, `repo-architect`, `multi-repo-swarm`
-
-### SPARC Methodology
-`sparc-coord`, `sparc-coder`, `specification`, `pseudocode`, `architecture`, `refinement`
-
-### Specialized Development
-`backend-dev`, `mobile-dev`, `ml-developer`, `cicd-engineer`, `api-docs`, `system-architect`, `code-analyzer`, `base-template-generator`
-
-### Testing & Validation
-`tdd-london-swarm`, `production-validator`
-
-### Migration & Planning
-`migration-planner`, `swarm-init`
-
-## 🎯 Claude Code vs MCP Tools
-
-### Claude Code Handles ALL EXECUTION:
-- **Task tool**: Spawn and run agents concurrently for actual work
-- File operations (Read, Write, Edit, MultiEdit, Glob, Grep)
-- Code generation and programming
-- Bash commands and system operations
-- Implementation work
-- Project navigation and analysis
-- TodoWrite and task management
-- Git operations
-- Package management
-- Testing and debugging
-
-### MCP Tools ONLY COORDINATE:
-- Swarm initialization (topology setup)
-- Agent type definitions (coordination patterns)
-- Task orchestration (high-level planning)
-- Memory management
-- Neural features
-- Performance tracking
-- GitHub integration
-
-**KEY**: MCP coordinates the strategy, Claude Code's Task tool executes with real agents.
-
-## 🚀 MCP Server Configuration
-
-**Auto-loads on startup** (already configured in `.claude/mcp_settings.json`):
-- ✅ Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, Slides)
-- ✅ Office 365 (Outlook, Teams, Planner, OneDrive, SharePoint)
-
-**Optional MCPs** (load only when requested):
-```bash
-# Load these ONLY when specifically needed
-# Currently set to disabled: true in mcp_settings.json
-
-# Claude Flow - Swarm coordination and neural training
-# To enable: Edit .claude/mcp_settings.json, set "disabled": false for claude-flow
-claude mcp add claude-flow npx claude-flow@alpha mcp start
-
-# RUV Swarm - Enhanced coordination (optional)
-claude mcp add ruv-swarm npx ruv-swarm mcp start
-
-# Flow Nexus - Cloud features (optional)
-claude mcp add flow-nexus npx flow-nexus@latest mcp start
-```
-
-**To disable Claude Flow** (per user preference):
-Edit `.claude/mcp_settings.json` and set `"disabled": true` for the `claude-flow` entry.
-
-## MCP Tool Categories
-
-### Coordination
-`swarm_init`, `agent_spawn`, `task_orchestrate`
-
-### Monitoring
-`swarm_status`, `agent_list`, `agent_metrics`, `task_status`, `task_results`
-
-### Memory & Neural
-`memory_usage`, `neural_status`, `neural_train`, `neural_patterns`
-
-### GitHub Integration
-`github_swarm`, `repo_analyze`, `pr_enhance`, `issue_triage`, `code_review`
-
-### System
-`benchmark_run`, `features_detect`, `swarm_monitor`
-
-### Flow-Nexus MCP Tools (Optional Advanced Features)
-Flow-Nexus extends MCP capabilities with 70+ cloud-based orchestration tools:
-
-**Key MCP Tool Categories:**
-- **Swarm & Agents**: `swarm_init`, `swarm_scale`, `agent_spawn`, `task_orchestrate`
-- **Sandboxes**: `sandbox_create`, `sandbox_execute`, `sandbox_upload` (cloud execution)
-- **Templates**: `template_list`, `template_deploy` (pre-built project templates)
-- **Neural AI**: `neural_train`, `neural_patterns`, `seraphina_chat` (AI assistant)
-- **GitHub**: `github_repo_analyze`, `github_pr_manage` (repository management)
-- **Real-time**: `execution_stream_subscribe`, `realtime_subscribe` (live monitoring)
-- **Storage**: `storage_upload`, `storage_list` (cloud file management)
-
-**Authentication Required:**
-- Register: `mcp__flow-nexus__user_register` or `npx flow-nexus@latest register`
-- Login: `mcp__flow-nexus__user_login` or `npx flow-nexus@latest login`
-- Access 70+ specialized MCP tools for advanced orchestration
-
-## 🚀 Agent Execution Flow with Claude Code
-
-### The Correct Pattern:
-
-1. **Optional**: Use MCP tools to set up coordination topology
-2. **REQUIRED**: Use Claude Code's Task tool to spawn agents that do actual work
-3. **REQUIRED**: Each agent runs hooks for coordination
-4. **REQUIRED**: Batch all operations in single messages
-
-### Example Full-Stack Development:
-
-```javascript
-// Single message with all agent spawning via Claude Code's Task tool
-[Parallel Agent Execution]:
-  Task("Backend Developer", "Build REST API with Express. Use hooks for coordination.", "backend-dev")
-  Task("Frontend Developer", "Create React UI. Coordinate with backend via memory.", "coder")
-  Task("Database Architect", "Design PostgreSQL schema. Store schema in memory.", "code-analyzer")
-  Task("Test Engineer", "Write Jest tests. Check memory for API contracts.", "tester")
-  Task("DevOps Engineer", "Setup Docker and CI/CD. Document in memory.", "cicd-engineer")
-  Task("Security Auditor", "Review authentication. Report findings via hooks.", "reviewer")
-  
-  // All todos batched together
-  TodoWrite { todos: [...8-10 todos...] }
-  
-  // All file operations together
-  Write "backend/server.js"
-  Write "frontend/App.jsx"
-  Write "database/schema.sql"
-```
-
-## 📋 Agent Coordination Protocol
-
-### Every Agent Spawned via Task Tool MUST:
-
-**1️⃣ BEFORE Work:**
-```bash
-npx claude-flow@alpha hooks pre-task --description "[task]"
-npx claude-flow@alpha hooks session-restore --session-id "swarm-[id]"
-```
-
-**2️⃣ DURING Work:**
-```bash
-npx claude-flow@alpha hooks post-edit --file "[file]" --memory-key "swarm/[agent]/[step]"
-npx claude-flow@alpha hooks notify --message "[what was done]"
-```
-
-**3️⃣ AFTER Work:**
-```bash
-npx claude-flow@alpha hooks post-task --task-id "[task]"
-npx claude-flow@alpha hooks session-end --export-metrics true
-```
-
-## 🎯 Concurrent Execution Examples
-
-### ✅ CORRECT WORKFLOW: MCP Coordinates, Claude Code Executes
-
-```javascript
-// Step 1: MCP tools set up coordination (optional, for complex tasks)
-[Single Message - Coordination Setup]:
-  mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 6 }
-  mcp__claude-flow__agent_spawn { type: "researcher" }
-  mcp__claude-flow__agent_spawn { type: "coder" }
-  mcp__claude-flow__agent_spawn { type: "tester" }
-
-// Step 2: Claude Code Task tool spawns ACTUAL agents that do the work
-[Single Message - Parallel Agent Execution]:
-  // Claude Code's Task tool spawns real agents concurrently
-  Task("Research agent", "Analyze API requirements and best practices. Check memory for prior decisions.", "researcher")
-  Task("Coder agent", "Implement REST endpoints with authentication. Coordinate via hooks.", "coder")
-  Task("Database agent", "Design and implement database schema. Store decisions in memory.", "code-analyzer")
-  Task("Tester agent", "Create comprehensive test suite with 90% coverage.", "tester")
-  Task("Reviewer agent", "Review code quality and security. Document findings.", "reviewer")
-  
-  // Batch ALL todos in ONE call
-  TodoWrite { todos: [
-    {id: "1", content: "Research API patterns", status: "in_progress", priority: "high"},
-    {id: "2", content: "Design database schema", status: "in_progress", priority: "high"},
-    {id: "3", content: "Implement authentication", status: "pending", priority: "high"},
-    {id: "4", content: "Build REST endpoints", status: "pending", priority: "high"},
-    {id: "5", content: "Write unit tests", status: "pending", priority: "medium"},
-    {id: "6", content: "Integration tests", status: "pending", priority: "medium"},
-    {id: "7", content: "API documentation", status: "pending", priority: "low"},
-    {id: "8", content: "Performance optimization", status: "pending", priority: "low"}
-  ]}
-  
-  // Parallel file operations
-  Bash "mkdir -p app/{src,tests,docs,config}"
-  Write "app/package.json"
-  Write "app/src/server.js"
-  Write "app/tests/server.test.js"
-  Write "app/docs/API.md"
-```
-
-### ❌ WRONG (Multiple Messages):
-```javascript
-Message 1: mcp__claude-flow__swarm_init
-Message 2: Task("agent 1")
-Message 3: TodoWrite { todos: [single todo] }
-Message 4: Write "file.js"
-// This breaks parallel coordination!
-```
-
-## Performance Benefits
-
-- **84.8% SWE-Bench solve rate**
-- **32.3% token reduction**
-- **2.8-4.4x speed improvement**
-- **27+ neural models**
-
-## Hooks Integration
-
-### Pre-Operation
-- Auto-assign agents by file type
-- Validate commands for safety
-- Prepare resources automatically
-- Optimize topology by complexity
-- Cache searches
-
-### Post-Operation
-- Auto-format code
-- Train neural patterns
-- Update memory
-- Analyze performance
-- Track token usage
-
-### Session Management
-- Generate summaries
-- Persist state
-- Track metrics
-- Restore context
-- Export workflows
-
-## Advanced Features (v2.0.0)
-
-- 🚀 Automatic Topology Selection
-- ⚡ Parallel Execution (2.8-4.4x speed)
-- 🧠 Neural Training
-- 📊 Bottleneck Analysis
-- 🤖 Smart Auto-Spawning
-- 🛡️ Self-Healing Workflows
-- 💾 Cross-Session Memory
-- 🔗 GitHub Integration
-
-## Integration Tips
-
-1. Start with basic swarm init
-2. Scale agents gradually
-3. Use memory for context
-4. Monitor progress regularly
-5. Train patterns from success
-6. Enable hooks automation
-7. Use GitHub tools first
-
-## Support
-
-- Documentation: https://github.com/ruvnet/claude-flow
-- Issues: https://github.com/ruvnet/claude-flow/issues
-- Flow-Nexus Platform: https://flow-nexus.ruv.io (registration required for cloud features)
-
 ---
 
-Remember: **Claude Flow coordinates, Claude Code creates!**
+## 🚨 IMPORTANT INSTRUCTION REMINDERS
 
-# important-instruction-reminders
-Do what has been asked; nothing more, nothing less.
+**Do what has been asked; nothing more, nothing less.**
+
+**CRITICAL: Attempt Complex Solutions First, Not Simple Alternatives**
+
+When user requests complex or difficult technologies (LangGraph, LangChain, LangSmith, advanced frameworks, enterprise tools, etc.):
+- **ALWAYS attempt the difficult/complex approach FIRST** - Don't immediately default to simple alternatives
+- **Try before suggesting alternatives** - If something is complex, communicate that honestly: "This is complex, but I'll attempt it..."
+- **Only suggest simpler alternatives AFTER**:
+  - Attempting the complex approach and encountering genuine blockers, OR
+  - Explaining specific technical reasons why the complex approach won't work in this context
+- **Avoid "easy but not scalable" solutions** - Simple solutions that are "difficult to scale" should be avoided unless user explicitly asks for a quick prototype
+
+**Why this matters**: The goal is scalable, production-ready solutions that won't need to be rebuilt later. User prefers tackling difficult implementations upfront rather than simple hacks that create technical debt.
+
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 Never save working files, text/mds and tests to the root folder.
+ALWAYS organize files in appropriate subdirectories.
+
+**MCP Server Access**: Google Workspace and Office 365 MCP servers auto-load on startup. They are ALWAYS available. Never ask "do you have access?"
+
+**Revenue-First Mindset**: Every action should move toward unlimited monthly recurring revenue. Build systems, not one-offs. Create reusable assets. Automate everything possible. Let's get to the bread.
